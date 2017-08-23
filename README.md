@@ -14,8 +14,10 @@
 
 搭配云服务器、国际域名、邮件推送等云计算资源，将能实现以下功能：
 
-* 通过互联网访问和管理服务器
+* 通过互联网访问网盘等功能
+* 远程管理服务器
 * 离线下载
+* 基于 P2P 的虚拟专用网
 * E-mail 故障通知
 
 ## 目录
@@ -23,6 +25,20 @@
 * 基础篇
 * 硬件篇
 * 程序篇
+
+## 采用的开源项目
+
+* [Debian](https://www.debian.org/)
+* [NextCloud](https://www.nextcloud.com)
+* [Syncthing](https://syncthing.net/)
+* [Aria2](https://aria2.github.io/)
+* [qBittorrent](https://www.qbittorrent.org/)
+* [Samba](https://www.samba.org/)
+* [Apache](http://httpd.apache.org/)
+* [MariaDB](https://downloads.mariadb.org/)
+* [Netatalk](http://netatalk.sourceforge.net/)
+* [frp](https://github.com/fatedier/frp)
+* [webui-aria2](https://github.com/ziahamza/webui-aria2)
 
 ## 版权 & 许可
 
