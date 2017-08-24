@@ -45,7 +45,7 @@
 * [webui-aria2](https://github.com/ziahamza/webui-aria2)
 
 ## 写作规范
-[DigitalOcean's Writing Guidelines](https://www.digitalocean.com/community/tutorials/digitalocean-s-writing-guidelines)
+[GetNAS 项目写作规范](writing-guidelines.md)
 
 ## 版权 & 许可
 
