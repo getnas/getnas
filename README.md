@@ -40,6 +40,7 @@
 * [Samba](https://www.samba.org/)
 * [Apache](http://httpd.apache.org/)
 * [MariaDB](https://downloads.mariadb.org/)
+* [Tinc](https://www.tinc-vpn.org/)
 * [Netatalk](http://netatalk.sourceforge.net/)
 * [frp](https://github.com/fatedier/frp)
 * [webui-aria2](https://github.com/ziahamza/webui-aria2)
