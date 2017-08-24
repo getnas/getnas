@@ -22,7 +22,7 @@
 
 ## 适用群体
 
-原则上本方案适用于任何人，我们会尽可能提供详细的操作说明，但对于没有 Linux 系统使用经验的用户来说，需要额外掌握一些知识，因此构建过程可能会比较漫长。
+原则上本方案适用于任何人，我们会尽可能提供详细的操作说明，没有 Linux 系统使用经验的用户可能需要额外掌握一些知识，因此构建过程会相应延长。
 
 ## 目录
 
@@ -43,6 +43,9 @@
 * [Netatalk](http://netatalk.sourceforge.net/)
 * [frp](https://github.com/fatedier/frp)
 * [webui-aria2](https://github.com/ziahamza/webui-aria2)
+
+## 写作规范
+[DigitalOcean's Writing Guidelines](https://www.digitalocean.com/community/tutorials/digitalocean-s-writing-guidelines)
 
 ## 版权 & 许可
 
