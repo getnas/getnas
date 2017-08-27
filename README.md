@@ -49,7 +49,7 @@
 
 ## 赞助 & 合作
 
-* [赞助 GetNAS 项目](sponsor.md)
+* [赞助 GetNAS 项目](sponsor/sponsor.md)
 
 ## 版权 & 许可
 
