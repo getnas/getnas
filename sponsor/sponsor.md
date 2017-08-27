@@ -28,11 +28,11 @@ GetNAS 商店地址：[点此访问](https://h5.youzan.com/v2/showcase/homepage?
 
 支付宝
 
-![支付宝](sponsor/alipay-code.jpg)
+![支付宝](https://raw.githubusercontent.com/getnas/getnas/master/sponsor/alipay-code.jpg)
 
 微信支付
 
-![微信支付](sponsor/wx-code.jpg)
+![微信支付](https://raw.githubusercontent.com/getnas/getnas/master/sponsor/wx-code.jpg)
 
 Paypal 支付
 
