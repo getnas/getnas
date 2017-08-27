@@ -27,6 +27,7 @@
 ## 目录
 
 * [准备工作](preparations.md)
+* [操作系统安装](operating-system-installation.md)
 
 ## 采用的开源项目
 
