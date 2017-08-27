@@ -46,6 +46,10 @@
 ## 写作规范
 [GetNAS 项目写作规范](writing-guidelines.md)
 
+## 赞助 & 合作
+
+* [赞助 GetNAS 项目](sponsor.md)
+
 ## 版权 & 许可
 
 版权所有 ©️ 2017 上海炬树信息科技有限公司
