@@ -38,7 +38,7 @@
 
 提示选择键盘，默认已选中 `汉语`，点击 `继续` 按钮即可。
 
-<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-area.png" alt="配置键盘">
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-keymap.png" alt="配置键盘">
 
 紧接着系统安装器会自动检测镜像，自动配置网络等一系列自动化配置，无需我们干预，等待完成即可。
 
