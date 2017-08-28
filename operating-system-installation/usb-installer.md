@@ -90,7 +90,9 @@ $ sudo sync
 
 ### Mac OS X
 
-与 Linux 系统下的制作方式类似，只是需要使用 `diskutil` 工具查看 U 盘设备名：
+**第一步 查看 U 盘设备名**
+
+使用 `diskutil` 工具查看 U 盘设备名：
 
 ```
 $ diskutil list
@@ -102,12 +104,14 @@ $ diskutil list
    2:       Microsoft Basic Data                         7.6 GB     disk2s2
 ```
 
-卸载 U 盘已挂载的所有分区：
+**第二步 卸载已挂在的 U 盘分区**
 
 ```
 $ diskutil unmountDisk /dev/disk2
 Unmount of all volumes on disk2 was successful
 ```
+
+**第三步 将系统镜像写入 U 盘**
 
 进入 Debian 系统镜像所在目录，以 `~/Downloads` 目录为例：
 
