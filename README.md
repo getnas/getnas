@@ -27,7 +27,7 @@
 ## 目录
 
 * [准备工作](preparations.md)
-* [操作系统安装](operating-system-installation.md)
+* [制作 U 盘系统安装盘](operating-system-installation/usb-installer.md)
 
 ## 采用的开源项目
 

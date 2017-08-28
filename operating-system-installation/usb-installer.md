@@ -1,4 +1,4 @@
-# 操作系统安装
+# 制作 U 盘系统安装盘
 
 ### 引言
 
@@ -87,6 +87,46 @@ $ sudo sync
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/win32-disk-imager.png" alt="Win32 Disk Imager 程序界面">
 
 写入完毕，Debian 系统安装盘就制作完成了。
+
+### Mac OS X
+
+与 Linux 系统下的制作方式类似，只是需要使用 `diskutil` 工具查看 U 盘设备名：
+
+```
+$ diskutil list
+......
+/dev/disk2 (external, physical):
+   #:                       TYPE NAME                    SIZE       IDENTIFIER
+   0:      GUID_partition_scheme                        *7.8 GB     disk2
+   1:                        EFI EFI                     209.7 MB   disk2s1
+   2:       Microsoft Basic Data                         7.6 GB     disk2s2
+```
+
+卸载 U 盘已挂载的所有分区：
+
+```
+$ diskutil unmountDisk /dev/disk2
+Unmount of all volumes on disk2 was successful
+```
+
+进入 Debian 系统镜像所在目录，以 `~/Downloads` 目录为例：
+
+```
+$ cd ~/Downloads
+```
+
+将镜像写入 U 盘：
+
+```
+~/Downloads$ sudo cp ./debian-9.1.0-amd64-netinst.iso /dev/disk2
+```
+
+镜像写入需要一些时间，再次看到终端提示符 `$` 就代表镜像写入完成了，紧接着执行 `sync` 同步命令：
+
+```
+$ sudo sync
+```
+这样，Debian 系统安装 U 盘就制作完成了。
 
 ### UNetbootin
 
