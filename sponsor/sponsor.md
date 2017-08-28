@@ -26,17 +26,17 @@ GetNAS 商店地址：[点此访问](https://h5.youzan.com/v2/showcase/homepage?
 
 如果 GetNAS 项目帮助了你，或是你特别喜爱我们的项目，可以通过以下方式扫码支付或转账向我们提供赞助，任何企业和个人均可使用这种方式，金额不限。
 
-支付宝
+**支付宝**
 
-![支付宝](https://raw.githubusercontent.com/getnas/getnas/master/sponsor/alipay-code.jpg)
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/sponsor/alipay-code.jpg" alt="支付宝" width="360">
 
-微信支付
+**微信支付**
 
-![微信支付](https://raw.githubusercontent.com/getnas/getnas/master/sponsor/wx-code.jpg)
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/sponsor/wx-code.jpg" alt="微信" width="360">
 
-Paypal 支付
+**Paypal 支付**
 
-[https://www.paypal.me/getnas](https://www.paypal.me/getnas)
+Papal.ME [https://www.paypal.me/getnas](https://www.paypal.me/getnas)
 
 ## 五、出版众筹
 
