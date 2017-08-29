@@ -111,3 +111,22 @@
 **操作确认**：选择 `是`，安装器会按照上面的设定，在 U 盘上创建并格式化分区。
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-partition-confirm.png" alt="分区确认">
+
+
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-other-cd.png" alt="扫描其他 CD">
+
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-apt-area.png" alt="软件源位置">
+
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-mirrors.png" alt="选择软件源">
+
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-proxy.png" alt="代理服务器">
+
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-contest.png" alt="流行度调查">
+
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-tasksel.png" alt="tasksel">
+
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-grub.png" alt="grub">
+
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-grub-device.png" alt="grub 设备">
+
+<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-complete.png" alt="安装完成">
