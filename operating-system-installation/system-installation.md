@@ -116,15 +116,15 @@
 
 ### 第七步 开始安装
 
-安装过程中，安装器会询问是否扫描其他 CD 介质，选择 `否` 忽略即可。
+**安装介质扫描**：安装过程中，安装器会询问是否扫描其他 CD 介质，选择 `否` 忽略即可。
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-other-cd.png" alt="扫描其他 CD">
 
-选择你所在的位置，以便于系统能够连接到与你距离较近的软件仓库，选择 `中国`。
+**选择你的位置**：以便于系统能够连接到与你距离较近的软件仓库，选择 `中国`。
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-apt-area.png" alt="软件源位置">
 
-选择镜像仓库，这一步安装器为我们列出了当前距离我们最近的所有软件源镜像仓库，可以任选一个，系统配置过程中，我们会使用 `netselect-apt` 工具找出速度最快的软件源。
+**选择镜像仓库**：这一步安装器为我们列出了当前距离我们最近的所有软件源镜像仓库，可以任选一个，系统配置过程中，我们会使用 `netselect-apt` 工具找出速度最快的软件源。
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-mirrors.png" alt="选择软件源">
 
@@ -152,4 +152,12 @@
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-complete.png" alt="安装完成">
 
-现在，你可以拔掉 U 盘系统安装盘，只保留安装了 Debian 系统的 U 盘，然后重新启动计算机。家庭 NAS 存储服务器的构建之旅，正式开始！
+现在，你可以拔掉 U 盘系统安装盘，只保留安装了 Debian 系统的 U 盘，然后重新启动计算机。
+
+## 总结
+
+Debian 操作系统的安装虽然步骤很多看似复杂，但只要读者耐心操作一遍，会发现这个过程还是很简单的。实际上，安装过程分为两个部分，前半部分是安装前的配置，后半部分则执行实际的安装。
+
+如果你对安装过程中某个步骤或某项设置不懂或不理解也没有关系，只要按照上面的步骤安装即可，日后你会逐渐了解 Linux 系统的各项功能和设置。
+
+现在，家庭 NAS 服务器的构建之旅正式开始！
