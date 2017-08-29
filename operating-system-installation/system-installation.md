@@ -8,6 +8,8 @@
 
 使用 U 盘系统盘安装 Linux 操作系统，要求你必须了解如何从 USB 设备引导计算机启动。通常，大多数计算机设计为在开机时按下 `F12` 键呼出引导选项菜单。也有可能是 `F8`、`F9`，详情请参照你的主板说明书。
 
+我们将采用网络安装形式，请确保用作构建 NAS 服务器的计算机已连接互联网。
+
 ## 系统安装
 
 ### 第一步 从 U 盘安装盘引导启动计算机
@@ -104,7 +106,7 @@
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-partition-final.png" alt="分区最终结果">
 
-由于我们删除了 swap 分区，安装器会给出提示，如下图，选择 `否` 忽略即可。
+由于我们删除了 swap 分区，安装器会给出提示询问是否返回分区菜单，如下图，选择 `否` 忽略即可。
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-partition-alert.png" alt="swap 警告">
 
@@ -112,21 +114,42 @@
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-partition-confirm.png" alt="分区确认">
 
+### 第七步 开始安装
+
+安装过程中，安装器会询问是否扫描其他 CD 介质，选择 `否` 忽略即可。
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-other-cd.png" alt="扫描其他 CD">
 
+选择你所在的位置，以便于系统能够连接到与你距离较近的软件仓库，选择 `中国`。
+
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-apt-area.png" alt="软件源位置">
+
+选择镜像仓库，这一步安装器为我们列出了当前距离我们最近的所有软件源镜像仓库，可以任选一个，系统配置过程中，我们会使用 `netselect-apt` 工具找出速度最快的软件源。
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-mirrors.png" alt="选择软件源">
 
+**HTTP 代理服务器**：直接跳过，如果你需要使用 HTTP 代理访问互联网，可能你当前的网络环境并不符合我们的构建要求。
+
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-proxy.png" alt="代理服务器">
+
+**流行度调查**：选择 `否`，除非你同意让操作系统定期在你的 NAS 上收集一些信息并发送给系统开发者。
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-contest.png" alt="流行度调查">
 
+**选择预装软件**：如下图所示，请只选择 `SSH Server` 和 `标准系统工具` 这两项。
+
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-tasksel.png" alt="tasksel">
+
+**GRUB 安装**：它是操作系统的启动引导器，必须安装它才能正常启动 Debian 系统，选择 `是`。
 
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-grub.png" alt="grub">
 
+**GRUB 安装位置**：这里我们需要将 GRUB 安装到 U 盘当中，在列表中选择 U 盘，注意不要选错。
+
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-grub-device.png" alt="grub 设备">
 
+当看到下图所示的界面，表示 Debian 操作系统已经成功的安装到了 U 盘当中。
+
 <img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/debian-installation-complete.png" alt="安装完成">
+
+现在，你可以拔掉 U 盘系统安装盘，只保留安装了 Debian 系统的 U 盘，然后重新启动计算机。家庭 NAS 存储服务器的构建之旅，正式开始！
