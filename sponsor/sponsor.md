@@ -20,7 +20,7 @@ GetNAS 项目基于标准的计算机硬件和云计算资源构建，如果您�
 
 GetNAS 商店由项目官方运营，出售产品包括预装系统的的 U 盘、特别定制的计算机硬件、GetNAS 项目周边产品等。产品质量可靠，价格从优，欢迎广大读者朋友前来选购。
 
-GetNAS 商店地址：[点此访问](https://h5.youzan.com/v2/showcase/homepage?kdt_id=19116922)
+GetNAS 在线商店：[点此访问](https://weidian.com/?userid=342133488)
 
 ## 四、资金赞助
 
