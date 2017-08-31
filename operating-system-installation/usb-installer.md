@@ -84,7 +84,7 @@ $ sudo sync
 
 插好 U 盘，运行 Win32 Disk Imager，如下图，选择系统 `.iso` 镜像文件，以及 U 盘的正确盘符，然后点击 `写入` 按钮。
 
-<img src="https://raw.githubusercontent.com/getnas/getnas/master/operating-system-installation/win32-disk-imager.png" alt="Win32 Disk Imager 程序界面">
+<img src="win32-disk-imager.png" alt="Win32 Disk Imager 程序界面">
 
 写入完毕，Debian 系统安装盘就制作完成了。
 
