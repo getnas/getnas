@@ -28,11 +28,11 @@ GetNAS 在线商店：[点此访问](https://weidian.com/?userid=342133488)
 
 **支付宝**
 
-<img src="https://raw.githubusercontent.com/getnas/getnas/master/sponsor/alipay-code.jpg" alt="支付宝" width="360">
+<img src="alipay-code.jpg" alt="支付宝" width="360">
 
 **微信支付**
 
-<img src="https://raw.githubusercontent.com/getnas/getnas/master/sponsor/wx-code.jpg" alt="微信" width="360">
+<img src="wx-code.jpg" alt="微信" width="360">
 
 **Paypal 支付**
 
