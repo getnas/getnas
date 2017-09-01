@@ -26,9 +26,11 @@
 
 ## 目录
 
+* [项目概述](summary.md)
 * [准备工作](preparations.md)
 * [制作 U 盘系统安装盘](operating-system-installation/usb-installer.md)
 * [安装 Debian 操作系统](operating-system-installation/system-installation.md)
+* [第一次启动](the-first-boot.md)
 
 ## 采用的开源项目
 
@@ -42,6 +44,7 @@
 * [MariaDB](https://downloads.mariadb.org/)
 * [Tinc](https://www.tinc-vpn.org/)
 * [Netatalk](http://netatalk.sourceforge.net/)
+* [Avahi](http://avahi.org/)
 * [frp](https://github.com/fatedier/frp)
 * [webui-aria2](https://github.com/ziahamza/webui-aria2)
 
@@ -56,6 +59,6 @@
 
 版权所有 ©️ 2017 上海炬树信息科技有限公司
 
-[<img alt="知识共享许可协议" style="border-width:0" src="https://www.getnas.com/wp-content/themes/getnas-vue/img/by-nc-nd-88x31.png">](http://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh)
+[<img alt="知识共享许可协议" style="border-width:0" src="images/by-nc-nd-88x31.png">](http://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh)
 
 本作品采用 [署名-非商业性使用-禁止演绎 4.0 国际许可协议](http://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh) 进行许可。
