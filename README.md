@@ -57,7 +57,7 @@
 
 ## 版权 & 许可
 
-版权所有 ©️ 2017 上海炬树信息科技有限公司
+版权所有 ©️ 2017 [于鸿儒](https://twitter.com/) (Herald Yu)
 
 [<img alt="知识共享许可协议" style="border-width:0" src="images/by-nc-nd-88x31.png">](http://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh)
 
