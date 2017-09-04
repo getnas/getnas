@@ -30,7 +30,7 @@
 * [准备工作](preparations.md)
 * [制作 U 盘系统安装盘](operating-system-installation/usb-installer.md)
 * [安装 Debian 操作系统](operating-system-installation/system-installation.md)
-* [第一次启动](the-first-boot.md)
+* [第一次启动](the-first-boot/the-first-boot.md)
 
 ## 采用的开源项目
 
