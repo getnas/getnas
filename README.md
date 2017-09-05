@@ -31,6 +31,7 @@
 * [制作 U 盘系统安装盘](operating-system-installation/usb-installer.md)
 * [安装 Debian 操作系统](operating-system-installation/system-installation.md)
 * [第一次启动](the-first-boot/the-first-boot.md)
+* [系统初始化](system-initialization/system-initialization.md)
 
 ## 采用的开源项目
 
