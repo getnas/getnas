@@ -1,6 +1,25 @@
-# SSH 远程登录服务器
+# SSH 远程访问服务器
+
+SSH - Secure (安全) Shell，是专门用作远程的登录的可靠协议。
+
+安装 Debian 系统时 `选择预装软件` 的环节我们特别勾选了 `SSH Server`。因此，我们的 NAS 主机默认就已开启了 SSH 协议支持。
 
 ## 通过 SSH 远程登录 NAS 主机
+
+绝大多数的 Linux 发行版和 Mac OS X 系统默认预装了 SSH 客户端，因此可在 `终端` 直接使用 `ssh` 命令。
+
+Microsoft Windows 系统没有预置，因此需要用户自行下载安装 SSH 客户端，推荐使用开源的 [Putty](http://www.putty.org/)。
+
+### Linux / Unix / MacOS
+
+### Microsoft Windows
+
+#### 第一步 下载 Putty
+
+请根据你的操作系统架构选择下载 32 位或 64 位的 Putty：
+
+* [Putty 32 位](https://the.earth.li/~sgtatham/putty/latest/w32/putty.exe) 
+* [Putty 64 位](https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe)
 
 ## 用主机名访问 NAS 主机
 
