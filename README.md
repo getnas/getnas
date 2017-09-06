@@ -32,7 +32,7 @@
 * [安装 Debian 操作系统](operating-system-installation/system-installation.md)
 * [第一次启动](the-first-boot/the-first-boot.md)
 * [更新系统](initialization/system-upgrade.md)
-* [](initialization/use-ssh.md)
+* [通过 SSH 远程管理服务器](initialization/use-ssh.md)
 
 ## 采用的开源项目
 
