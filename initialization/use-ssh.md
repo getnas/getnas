@@ -1,4 +1,6 @@
-# 通过 SSH 远程管理服务器
+# SSH 远程登录服务器
+
+## 通过 SSH 远程登录 NAS 主机
 
 ## 用主机名访问 NAS 主机
 
@@ -16,4 +18,3 @@ getnas@getnas:~$ sudo apt install avahi-daemon
 
 由于 Windows 系统目前还不能识别 NAS 的主机名，因此进一步的测试我们等到配置 Samba 共享时再做介绍。
 
-## 通过 SSH 远程登录 NAS 主机
