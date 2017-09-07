@@ -45,11 +45,11 @@ Disk identifier: 0x2fe06793
 
 ## 初始化磁盘
 
-不论你所准备的硬盘新旧与否，我们都建议在创建存储分区之前对每块硬盘进行初始化，让它们在相同的规格下工作。
+不论你所准备的硬盘新旧与否，我们都建议在创建存储分区之前对每块硬盘进行初始化并重新分区，让它们在相同的规格下工作。
 
 ### 将硬盘转换为 GPT 类型
 
-考虑到会有读者使用 3TB 以上的硬盘用作数据存储，然而普通的 `MSDOS` 分区表单个分区最大支持 2TB。因此，这里我们将把所有硬盘的分区表都转换成 `GPT` 格式，它支持单个分区最大 18EB (1EB=1024PB=1,048,576TB)。
+考虑到会有读者使用 3TB 以上的硬盘用作数据存储，然而普通的 `MSDOS` 分区表单个分区最大仅支持 2TB。因此，这里我们将把所有硬盘的分区表都转换成 `GPT` 格式，它支持单个分区最大 18EB (1EB=1024PB=1,048,576TB)。
 
 管理 `GPT` 格式的磁盘，需要使用 `Parted` 工具，安装：
 
@@ -130,21 +130,109 @@ Number  Start   End     Size   File system  Name     Flags
 (parted) rm 1
 ``` 
 
-这样就完成了一个硬盘的初始化，以此类推，其他硬盘也请参考上述流程进行初始化。
+## RAID - 磁盘阵列
 
-## SoftRAID - 软磁盘阵列
+### 硬盘分区
+
+使用 `gdisk` 工具，在两块硬盘上分别创建 `Linux RAID` 类型的分区。
+
+**第一步 安装 gdisk**
+
+```
+getnas@getnas:~$ sudo apt install gdisk
+```
+
+**第二步 在交互模式下打开 gdisk**
+
+```
+getnas@getnas:~$ sudo gdisk /dev/sdb
+[sudo] getnas 的密码：
+GPT fdisk (gdisk) version 1.0.1
+
+Partition table scan:
+  MBR: protective
+  BSD: not present
+  APM: not present
+  GPT: present
+
+Found valid GPT with protective MBR; using GPT.
+
+Command (? for help):
+```
+
+输入 `?` 或 `h` 或 `help` 查看可用的命令：
+
+```
+Command (? for help): h
+b	back up GPT data to a file
+c	change a partition's name
+d	delete a partition
+i	show detailed information on a partition
+l	list known partition types
+n	add a new partition
+o	create a new empty GUID partition table (GPT)
+p	print the partition table
+q	quit without saving changes
+r	recovery and transformation options (experts only)
+s	sort partitions
+t	change a partition's type code
+v	verify disk
+w	write table to disk and exit
+x	extra functionality (experts only)
+?	print this menu
+```
+
+**第三步 创建新分区**
+
+输入 `n` 回车确认，开始创建新分区：
+
+* Partition number：分区编号，默认，直接按回车确认；
+* First sector：分区在磁盘的起始位置，默认，直接回车确认；
+* Last sector：分区在磁盘的结束位置，保留硬盘最后的 100MB 空间，输入 `-100M`；
+* Hex code or GUID：分区类型的 16 进制代码，输入 `fd00`，即 `Linux RAID` 类型；
+
+```
+Command (? for help): n
+Partition number (1-128, default 1):
+First sector (34-1953525134, default = 2048) or {+-}size{KMGTP}:
+Last sector (2048-1953525134, default = 1953525134) or {+-}size{KMGTP}: -100MB
+Current type is 'Linux filesystem'
+Hex code or GUID (L to show codes, Enter = 8300): fd00
+Changed type of partition to 'Linux RAID'
+```
+
+**第四步 将所有变化写入磁盘**
+
+前面所做的变更临时存储在内存中，如果想让新分区生效，需要将所有变更写入磁盘。
+
+输入 `w`，程序会给出简短的安全提示，并询问我们是否继续执行，输入 `y` 并按回车确认。
+
+```
+Command (? for help): w
+
+Final checks complete. About to write GPT data. THIS WILL OVERWRITE EXISTING
+PARTITIONS!!
+
+Do you want to proceed? (Y/N): y
+OK; writing new GUID partition table (GPT) to /dev/sdb.
+The operation has completed successfully.
+```
+
+写入完成后，程序自动退出。
+
+### 创建 RAID 1
 
 磁盘初始化完成后，接下来我们要把 NAS 服务器上的两块 1TB 硬盘配置成 RAID 1 磁盘阵列。
 
 RAID 1 磁盘阵列是将两块硬盘互做镜像，任何数据都会以完全相同的方式分别存储到两块硬盘当中。即使其中一块硬盘损坏，也不会有数据丢失的风险。
+
+> 注意：两块 1TB 的硬盘组成 RAID 1 磁盘阵列后，实际存储容量为单块硬盘的大小，即可用空间为 1TB。
 
 我们需要使用 `mdadm` 工具配置磁盘阵列，安装：
 
 ```
 getnas@getnas:~$ sudo apt install mdadm
 ```
-
-### 创建 RAID 1
 
 使用 `mdadm` 命令附加必要的参数：
 
@@ -181,6 +269,26 @@ mdadm: array /dev/md0 started.
 ```
 
 这样，路径名为 `/dev/md0` 的 RAID 1 类型磁盘阵列就创建好了。
+
+### 将磁盘阵列信息写入配置文件
+
+新建的磁盘阵列设备 `/dev/md0` 信息必须写入到 `mdadm` 管理工具的配置文件中才能确保系统重启后磁盘阵列设备能够被正常识别和使用。
+
+切换到 `root` 用户身份：
+
+```
+getnas@getnas:~$ sudo su
+```
+
+将 `/dev/md0` 设备信息写入 `mdadm.conf` 配置文件：
+
+```
+root@getnas:/home/getnas# mdadm --detail --scan /dev/md0 >> /etc/mdadm/mdadm.conf
+```
+
+退回普通用户身份，使用组合键 `CTRL + D` 或输入 `exit` 回车键确认。
+
+有兴趣的读者可以尝试不写阵列信息到配置文件，创建磁盘阵列后直接重新启动。你会发现重启系统后磁盘阵列设备已经不存在了。
 
 ### 查看磁盘阵列状态
 
