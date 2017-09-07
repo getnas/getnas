@@ -119,7 +119,7 @@ Microsoft Windows 系统默认没有对 SSH 协议提供支持，因此需要用
 
 在安装系统时我们设置了主机名 `getnas` 和域名 `local`，并且强调要以 `getnas.local` 的域名形式在局域网中访问这台 NAS 主机。
 
-在局域网中使用域名访问 NAS 服务的主要优点在于无需记忆 IP 地址，这对于使用 DHCP 获取动态 IP 地址的 NAS 服务器更言更是福音。
+在局域网中使用域名访问 NAS 服务的主要优点在于无需记忆 IP 地址，这对使用 DHCP 获取动态 IP 的 NAS 服务器来说是一种福音。
 
 想要实现这种域名访问，需要 `avahi-daemon` 软件包的主机名广播功能，同时还需要 `samba` 的 NetBIOS 功能。
 
