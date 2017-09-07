@@ -37,7 +37,7 @@ Ubuntu 桌面版用 `CTRL + ATL + T` 组合快捷键可直接打开终端。
 
 #### 第二步 启动连接
 
-使用 `ssh` 命令发起服务器连接请求：
+在终端中使用 `ssh` 命令发起服务器连接请求：
 
 ```
 $ ssh getnas@192.168.10.102
@@ -84,8 +84,6 @@ Last login: Thu Sep  7 09:31:28 2017 from 192.168.10.193
 getnas@getnas:~$
 ```
 
-现在开始，NAS 服务器已经不再需要显示器和键盘了。
-
 ### Microsoft Windows
 
 Microsoft Windows 系统默认没有对 SSH 协议提供支持，因此需要用户自行下载安装 SSH 客户端，推荐使用开源的 [Putty](http://www.putty.org/)。
@@ -97,21 +95,49 @@ Microsoft Windows 系统默认没有对 SSH 协议提供支持，因此需要用
 * [Putty 32 位](https://the.earth.li/~sgtatham/putty/latest/w32/putty.exe) 
 * [Putty 64 位](https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe)
 
+#### 第二步 连接配置
+
+下载的 `putty.exe` 是绿色文件，无需安装双击即可直接运行，程序界面如下图：
+
+![Putty 主界面](putty.png)
+
+我们只需把 NAS 服务器的 IP 地址输入到 `Host Name` 文本框中，然后点击 `Open` 按钮即可。
+
+初次连接会弹出下图所示的安全提示窗口，点击 `是` 确认即可。
+
+![SSH 安全提示](putty-security-alert.png)
+
+#### 第三步 登录 NAS 服务器
+
+当 Putty 提示 `login as:` 时输入我们在 NAS 服务器上创建的用户名，提示 `getnas@192.168.10.102‘s password:` 时输入用户密码。
+
+用户名和密码验证通过，即可成功登录 NAS 服务器，如下图：
+
+![](putty-login.png)
+
 ## 用主机名访问 NAS 主机
 
-在安装系统时我们设置了主机名 `getnas` 和域名 `local`，而且还强调将来要以 `getnas.local` 的域名形式在局域网中访问这台 NAS 主机。
+在安装系统时我们设置了主机名 `getnas` 和域名 `local`，并且强调要以 `getnas.local` 的域名形式在局域网中访问这台 NAS 主机。
 
-想要实现这种域名访问，需要安装 `avahi-daemon` 软件包。它主要用作局域网的设备发现和广播本机的主机名，这样就可以实现其他设备通过主机名访问到本机。
+在局域网中使用域名访问 NAS 服务的主要优点在于无需记忆 IP 地址，这对于使用 DHCP 获取动态 IP 地址的 NAS 服务器更言更是福音。
 
-安装 `avahi-daemon`：
+想要实现这种域名访问，需要 `avahi-daemon` 软件包的主机名广播功能，同时还需要 `samba` 的 NetBIOS 功能。
+
+### 安装 `Avahi` 和 `Samba`
 
 ```
-getnas@getnas:~$ sudo apt install avahi-daemon
+getnas@getnas:~$ sudo apt install avahi-daemon samba
 ```
 
-现在，使用局域网中任何一台 Linux 计算机运行 `ping getnas.local` 命令即可看到成功连通的输出。
+现在，使用局域网中任何一台 Unix-like 系统的计算机执行 `ping getnas.local` 命令即可看到成功连通的输出。
 
-由于 Windows 系统目前还不能识别 NAS 的主机名，因此进一步的测试我们等到配置 Samba 共享时再做介绍。
+Microsoft Windows 系统的计算机，在 `命令提示符` 中执行 `ping getnas` 命令即可看到相似的连通输出。
+
+> 注意：Windows 系统是借助 Samba 的 NetBIOS 功能实现对 NAS 服务器主机名的访问，地址中不要使用 `.local` 域名后缀。
+
+### SSH 登录时使用主机名
+
+**Linux/Unix/MacOS** 使用地址 `getnas.local`：
 
 ```
 macbook:~ Herald$ ssh getnas@getnas.local
@@ -120,3 +146,10 @@ ECDSA key fingerprint is SHA256:pYF93FVqmh5uwCTv8LL3Q8n/kHzEHmGRFwUOidbqW5s.
 Are you sure you want to continue connecting (yes/no)?
 ```
 
+**Microsoft Windows** 使用主机名 `getnas`：
+
+只需在 Putty 的 `Host Name` 中输入 `getnas` 即可，第一次使用主机名连接到 NAS 服务器，客户端仍然会发出安全提示，所有操作与使用 IP 地址连接时完全相同。
+
+## 总结
+
+不只是其他计算机，局域网中所有能够使用 SSH 客户端的手机等设备都可以建立与 NAS 远程连接。至此，NAS 服务器已经不再需要显示器和键盘了。
