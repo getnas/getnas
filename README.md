@@ -33,6 +33,7 @@
 * [第一次启动](the-first-boot/the-first-boot.md)
 * [更新系统](initialization/system-upgrade.md)
 * [通过 SSH 远程管理服务器](initialization/use-ssh.md)
+* [配置数据盘](initialization/hdd-set.md)
 
 ## 采用的开源项目
 
