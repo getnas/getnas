@@ -293,7 +293,17 @@ tmpfs           1.2G     0  1.2G    0% /run/user/1000
 
 从最后一行可以看到，`/dev/sda1` 分区的挂载点为 `/mnt/storage`。即所有存储到 `/mnt/storage` 文件夹中的数据，实际存储在 `/dev/sda1` 分区中。
 
-### 第五步 分区信息写入 /etc/fstab 配置文件
+### 第五步 设置分区的所有者权限
+
+由于我们今后主要以 `getnas` 用户身份使用挂载的数据存储目录，因此很有必要重新指定目录的所有者：
+
+```
+getnas@getnas:~$ sudo chown -R getnas:getnas /mnt/storage
+```
+
+这样一来，我们无需在命令中添加 `sudo`，也能自由的在 `/mnt/storage` 目录中进行读、写、执行等操作。
+
+### 第六步 分区信息写入 /etc/fstab 配置文件
 
 手动挂载的分区在系统重启后不会自动重新挂载，为了实现分区的自动挂载，我们需要将挂载信息写入系统专门管理分区挂载信息的配置文件 `/etc/fstab` 当中。
 
@@ -310,7 +320,15 @@ getnas@getnas:~$ sudo blkid
 getnas@getnas:~$ sudo nano /etc/fstab
 ```
 
-配置文件中的内容类似这样，带有 `#` 号的行为注释信息：
+在配置问的末尾新增一行，内容为：
+
+```
+UUID=12c59881-01cd-483e-969b-19e55e4e65ed  /mnt/storage  ext4  auto  0  0
+```
+
+> 注意：一行共有 6 个部分，用空格分隔每个部分，请用你实际查询到值替换 `UUID` 值。
+
+配置好的文件看起来类似下面这样，带有 `#` 号的行为注释信息：
 
 ```
 # /etc/fstab: static file system information.
@@ -323,7 +341,10 @@ getnas@getnas:~$ sudo nano /etc/fstab
 # / was on /dev/sda1 during installation
 UUID=a915e0e5-6249-42ec-8be0-2624f3511275 /               ext4    errors=remount-ro 0       1
 /dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
+UUID=12c59881-01cd-483e-969b-19e55e4e65ed  /mnt/storage  ext4  auto  0  0
 ```
+
+编辑好以后使用组合键 `CTRL + o` 保存，使用组合键 `CTRL + x` 退出编辑器。
 
 ## 方案二 硬盘 + LVM
 
