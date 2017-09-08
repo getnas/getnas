@@ -10,16 +10,12 @@
 
 ```
 getnas@getnas:~$ sudo fdisk -l
-
-Disk /dev/sda: 7.3 GiB, 7807696896 bytes, 15249408 sectors
+Disk /dev/sda: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
 Units: sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 512 bytes
-I/O size (minimum/optimal): 512 bytes / 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
 Disklabel type: dos
-Disk identifier: 0xf008b997
-
-Device     Boot Start      End  Sectors  Size Id Type
-/dev/sda1  *     2048 13152255 13150208  6.3G 83 Linux
+Disk identifier: 0xb0b3946c
 
 
 Disk /dev/sdb: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
@@ -27,21 +23,24 @@ Units: sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 4096 bytes
 I/O size (minimum/optimal): 4096 bytes / 4096 bytes
 Disklabel type: dos
-Disk identifier: 0x9c4da728
+Disk identifier: 0xfb14eef7
 
 
-Disk /dev/sdc: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
+Disk /dev/sdc: 7.3 GiB, 7807696896 bytes, 15249408 sectors
 Units: sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 4096 bytes
-I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
 Disklabel type: dos
-Disk identifier: 0x2fe06793
+Disk identifier: 0xf008b997
+
+Device     Boot Start      End  Sectors  Size Id Type
+/dev/sdc1  *     2048 13152255 13150208  6.3G 83 Linux
 ```
 
-从命令输出可以看到 NAS 服务器上目前有 3 个磁盘设备：
+可以看到 NAS 服务器上目前有 3 个磁盘设备：
 
+* 磁盘 `/dev/sda` 和 `/dev/sdb` 容量均 931.5 GiB，是我们用作存储数据的机械硬盘。
 * 磁盘 `/dev/sda` 容量 7.3 GiB，是安装了 Debian 系统的 U 盘。
-* 磁盘 `/dev/sdb` 和 `/dev/sdc` 容量均 931.5 GiB，是我们准备用作存储数据的机械硬盘。
 
 ## 初始化磁盘
 
@@ -49,7 +48,7 @@ Disk identifier: 0x2fe06793
 
 ### 将硬盘转换为 GPT 类型
 
-考虑到会有读者使用 3TB 以上的硬盘用作数据存储，然而普通的 `MSDOS` 分区表单个分区最大仅支持 2TB。因此，这里我们将把所有硬盘的分区表都转换成 `GPT` 格式，它支持单个分区最大 18EB (1EB=1024PB=1,048,576TB)。
+考虑到有读者会使用 3TB 以上的硬盘，而 `MSDOS` 分区表单个分区最大仅支持 2TB。因此，为了 NAS 服务器未来扩容更操作更平滑，建议将所有硬盘的分区表都转换成 `GPT` 格式，它支持单个分区最大 18EB (1EB=1024PB=1,048,576TB)。
 
 管理 `GPT` 格式的磁盘，需要使用 `Parted` 工具，安装：
 
@@ -57,12 +56,12 @@ Disk identifier: 0x2fe06793
 getnas@getnas:~$ sudo apt install parted
 ```
 
-这里我们以初始化 `/dev/sdb` 硬盘为例介绍如何使用用 `Parted`。
+下面以初始化 `/dev/sda` 硬盘为例，介绍如何使用用 `Parted`。
 
 **第一步 在交互模式下打开 parted**
 
 ```
-getnas@getnas:~$ sudo parted /dev/sdb
+getnas@getnas:~$ sudo parted /dev/sda
 GNU Parted 3.2
 Using /dev/sdb
 Welcome to GNU Parted! Type 'help' to view a list of commands.
@@ -92,12 +91,14 @@ Welcome to GNU Parted! Type 'help' to view a list of commands.
 
 ```
 (parted) mklabel gpt
-Warning: The existing disk label on /dev/sdb will be destroyed and all data on this disk will
+Warning: The existing disk label on /dev/sda will be destroyed and all data on this disk will
 be lost. Do you want to continue?
 Yes/No? 
 ```
 
 看到 `Yes/No` 提示时，输入 `yes` 并 `Enter` 回车键确认。
+
+> 提示：如果需要将硬盘从 GPT 类型转换会 MBR 类型，只需执行 `mklabel msdos` 即可。
 
 **第三步 检查是否转换成功**
 
@@ -106,7 +107,7 @@ Yes/No?
 ```
 (parted) p
 Model: ATA WDC WD10EZEX-00B (scsi)
-Disk /dev/sdb: 1000GB
+Disk /dev/sda: 1000GB
 Sector size (logical/physical): 512B/4096B
 Partition Table: gpt
 Disk Flags:
@@ -120,105 +121,69 @@ Number  Start   End     Size   File system  Name     Flags
 
 看到 `Partition Table` 为 `gpt`，代表已经转换成功了。
 
+**第四步 切换设备**
+
+Parted 工具交互模式下每次操作一个磁盘设备，使用 `select` 命令可切换到其他磁盘设备，例如，切换成 `/dev/sdb`：
+
+```
+(parted) select
+New device?  [/dev/sda]? /dev/sdb
+Using /dev/sdb
+```
+
 ### 删除旧分区
 
 如果你给 NAS 服务器安装了使用过且未格式化的旧硬盘，硬盘中很可能存在旧的分区。在 `parted` 交互模式下输入 `p` 或 `print`，能够看到当前操作的磁盘是否存在旧的分区。
 
-从前面转换磁盘为 GPT 格式最后的输出可以看到，当前硬盘中存在 2 个均为 500GB 的分区，他们的数字编号分别为 `1` 和 `2`。使用 `rm` 命令加分区数字编号，即可快速删除分区，一次删除一个分区。
+```
+......
+Disk Flags:
+
+Number  Start   End     Size   File system  Name     Flags
+ 1      1049kB  500GB   500GB  ext4         primary
+ 2      500GB   1000GB  500GB  ext4         primary
+```
+
+例如当前硬盘中存在 2 个均为 500GB 的分区，数字编号分别为 `1` 和 `2`。使用 `rm` 命令加分区数字编号，即可删除分区。
 
 ```
 (parted) rm 1
 ``` 
 
-## RAID - 磁盘阵列
+一次删除一个分区，可以反复用 `p` 或 `print` 命令查看磁盘信息，以确认分区是否成功删除。
+
+## 存储方案
+
+硬盘初始化完成，接下来需要我们思考并选择一个适合自己的存储方案。通常有以下几种方案供你选择：
+
+* 方案一：HDD，数据直接存储在硬盘上
+* 方案二：RAID，数据存储在由两块以上硬盘组成 RAID 磁盘阵列，数据更安全；
+* 方案三：HDD + LVM，将硬盘添加到 LVM 存储池，可随时添加磁盘扩展存储容量；
+* 方案四：RAID + LVM，将硬盘组成 RAID 磁盘阵列，再将磁盘阵列添加到 LVM 存储池，兼顾扩容能力和数据安全；
+
+以上几种方案各有长短，没有所谓最佳方案，请读者根据对 NAS 服务器的实际需求进行选择。
+
+例如，你计划备份和共享比较重要的照片，总量预计不会超过 4TB，那么用两块 4TB 硬盘组成 RAID 1 磁盘阵列就是不错的方案。
+
+再比如，你计划用 NAS 做 BT 下载机，数据安全性要求不高，使用一块容量足够大的硬盘直接用作数据存储即可。
+
+## 方案一 直接使用硬盘
+
+## 方案二 硬盘 + LVM
+
+配置 LVM 卷需要使用 `lvm2` 工具，安装：
+
+```
+getnas@getnas:~$ sudo apt install lvm2
+```
+
+## 方案三 直接使用 RAID 磁盘阵列
 
 ### 硬盘分区
 
-使用 `gdisk` 工具，在两块硬盘上分别创建 `Linux RAID` 类型的分区。
-
-**第一步 安装 gdisk**
-
-```
-getnas@getnas:~$ sudo apt install gdisk
-```
-
 **第二步 在交互模式下打开 gdisk**
 
-```
-getnas@getnas:~$ sudo gdisk /dev/sdb
-[sudo] getnas 的密码：
-GPT fdisk (gdisk) version 1.0.1
-
-Partition table scan:
-  MBR: protective
-  BSD: not present
-  APM: not present
-  GPT: present
-
-Found valid GPT with protective MBR; using GPT.
-
-Command (? for help):
-```
-
-输入 `?` 或 `h` 或 `help` 查看可用的命令：
-
-```
-Command (? for help): h
-b	back up GPT data to a file
-c	change a partition's name
-d	delete a partition
-i	show detailed information on a partition
-l	list known partition types
-n	add a new partition
-o	create a new empty GUID partition table (GPT)
-p	print the partition table
-q	quit without saving changes
-r	recovery and transformation options (experts only)
-s	sort partitions
-t	change a partition's type code
-v	verify disk
-w	write table to disk and exit
-x	extra functionality (experts only)
-?	print this menu
-```
-
 **第三步 创建新分区**
-
-输入 `n` 回车确认，开始创建新分区：
-
-* Partition number：分区编号，默认，直接按回车确认；
-* First sector：分区在磁盘的起始位置，默认，直接回车确认；
-* Last sector：分区在磁盘的结束位置，保留硬盘最后的 100MB 空间，输入 `-100M`；
-* Hex code or GUID：分区类型的 16 进制代码，输入 `fd00`，即 `Linux RAID` 类型；
-
-```
-Command (? for help): n
-Partition number (1-128, default 1):
-First sector (34-1953525134, default = 2048) or {+-}size{KMGTP}:
-Last sector (2048-1953525134, default = 1953525134) or {+-}size{KMGTP}: -100MB
-Current type is 'Linux filesystem'
-Hex code or GUID (L to show codes, Enter = 8300): fd00
-Changed type of partition to 'Linux RAID'
-```
-
-**第四步 将所有变化写入磁盘**
-
-前面所做的变更临时存储在内存中，如果想让新分区生效，需要将所有变更写入磁盘。
-
-输入 `w`，程序会给出简短的安全提示，并询问我们是否继续执行，输入 `y` 并按回车确认。
-
-```
-Command (? for help): w
-
-Final checks complete. About to write GPT data. THIS WILL OVERWRITE EXISTING
-PARTITIONS!!
-
-Do you want to proceed? (Y/N): y
-OK; writing new GUID partition table (GPT) to /dev/sdb.
-The operation has completed successfully.
-```
-
-写入完成后，程序自动退出。
 
 ### 创建 RAID 1
 
@@ -270,27 +235,7 @@ mdadm: array /dev/md0 started.
 
 这样，路径名为 `/dev/md0` 的 RAID 1 类型磁盘阵列就创建好了。
 
-### 将磁盘阵列信息写入配置文件
-
-新建的磁盘阵列设备 `/dev/md0` 信息必须写入到 `mdadm` 管理工具的配置文件中才能确保系统重启后磁盘阵列设备能够被正常识别和使用。
-
-切换到 `root` 用户身份：
-
-```
-getnas@getnas:~$ sudo su
-```
-
-将 `/dev/md0` 设备信息写入 `mdadm.conf` 配置文件：
-
-```
-root@getnas:/home/getnas# mdadm --detail --scan /dev/md0 >> /etc/mdadm/mdadm.conf
-```
-
-退回普通用户身份，使用组合键 `CTRL + D` 或输入 `exit` 回车键确认。
-
-有兴趣的读者可以尝试不写阵列信息到配置文件，创建磁盘阵列后直接重新启动。你会发现重启系统后磁盘阵列设备已经不存在了。
-
-### 查看磁盘阵列状态
+### 查看磁盘阵列信息
 
 `mdadm` 命令后跟磁盘阵列设备名，即可查看最基本的设备信息：
 
@@ -337,45 +282,17 @@ Working Devices : 2
 
 ```
 getnas@getnas:~$ sudo fdisk -l
-Disk /dev/sda: 7.3 GiB, 7807696896 bytes, 15249408 sectors
-Units: sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 512 bytes
-I/O size (minimum/optimal): 512 bytes / 512 bytes
-Disklabel type: dos
-Disk identifier: 0xf008b997
-
-Device     Boot Start      End  Sectors  Size Id Type
-/dev/sda1  *     2048 13152255 13150208  6.3G 83 Linux
-
-
-The primary GPT table is corrupt, but the backup appears OK, so that will be used.
-Disk /dev/sdb: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
-Units: sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 4096 bytes
-I/O size (minimum/optimal): 4096 bytes / 4096 bytes
-Disklabel type: gpt
-Disk identifier: B8DF590E-740A-4FEF-9FB1-8F84C508BB84
-
-
-The primary GPT table is corrupt, but the backup appears OK, so that will be used.
-Disk /dev/sdc: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
-Units: sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 4096 bytes
-I/O size (minimum/optimal): 4096 bytes / 4096 bytes
-Disklabel type: gpt
-Disk identifier: C371F528-85BC-49EB-A28E-753EB84E105F
-
-
+......
 Disk /dev/md0: 931.4 GiB, 1000070643712 bytes, 1953262976 sectors
 Units: sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 4096 bytes
 I/O size (minimum/optimal): 4096 bytes / 4096 bytes
 ```
 
-## 配置 LVM
-
-配置 LVM 卷需要使用 `lvm2` 工具，安装：
+### 查看磁盘阵列状态
 
 ```
-getnas@getnas:~$ sudo apt install lvm2
+
 ```
+
+## 方案四 RAID + LVM
