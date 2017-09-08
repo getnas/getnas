@@ -59,7 +59,7 @@ getnas@getnas:~$ sudo apt install parted
 
 这里我们以初始化 `/dev/sdb` 硬盘为例介绍如何使用用 `Parted`。
 
-**第一步 交互模式管理磁盘**
+**第一步 在交互模式下打开 parted**
 
 ```
 getnas@getnas:~$ sudo parted /dev/sdb
