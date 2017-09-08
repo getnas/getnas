@@ -37,7 +37,11 @@
 * [第一次启动](the-first-boot/the-first-boot.md)
 * [更新系统](initialization/system-upgrade.md)
 * [通过 SSH 远程管理服务器](initialization/use-ssh.md)
-* [配置数据盘](initialization/hdd-set.md)
+* [准备数据盘](storage/prepare-hdd.md)
+	* [方案一 直接使用硬盘分区](storage/case-one.md)
+	* [方案二 硬盘 + LVM](storage/case-two.md)
+	* [方案三 直接使用 RAID 磁盘阵列](storage/case-three.md)
+	* [方案四 RAID + LVM](storage/case-four.md)
 
 ## 采用的开源项目
 
