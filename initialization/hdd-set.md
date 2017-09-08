@@ -298,7 +298,7 @@ tmpfs           1.2G     0  1.2G    0% /run/user/1000
 由于我们今后主要以 `getnas` 用户身份使用挂载的数据存储目录，因此很有必要重新指定目录的所有者：
 
 ```
-getnas@getnas:~$ sudo chown -R getnas:getnas /mnt/storage
+getnas@getnas:~$ sudo chown getnas:getnas /mnt/storage
 ```
 
 这样一来，我们无需在命令中添加 `sudo`，也能自由的在 `/mnt/storage` 目录中进行读、写、执行等操作。
