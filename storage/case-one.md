@@ -6,7 +6,7 @@
 
 我们以 `/dev/sda` 1TB 硬盘为例，介绍如何创建和挂载分区。
 
-### 第一步 交互模式运行 Parted
+## 第一步 交互模式运行 Parted
 
 ```
 getnas@getnas:~$ sudo parted /dev/sda
@@ -16,9 +16,9 @@ Welcome to GNU Parted! Type 'help' to view a list of commands.
 (parted)
 ```
 
-### 第二步 创建分区
+## 第二步 创建分区
 
-我们输入 `mkpart` 命令，创建一个占用整个硬盘空间的分区：
+输入 `mkpart` 命令，创建一个占用整个硬盘空间的分区：
 
 * Partition name：分区名，留空；
 * File system type：文件系统类型，建议使用 ext4；
@@ -49,7 +49,7 @@ Number  Start   End     Size    File system  Name  Flags
 
 可以看到分区已经成功创建，输入 `q` 或 `quit` 命令退出 parted。
 
-### 第三步 格式化分区
+## 第三步 格式化分区
 
 使用 `fdisk` 命令查看 `/dev/sda` 设备的分区情况：
 
@@ -88,7 +88,7 @@ Proceed anyway? (y,N) y
 写入超级块和文件系统账户统计信息： 已完成
 ```
 
-### 第四步 挂载分区
+## 第四步 挂载分区
 
 一般而言，在 Linux 系统中用户习惯挂载数据分区到 `/mnt` 目录下。
 
@@ -124,7 +124,7 @@ tmpfs           1.2G     0  1.2G    0% /run/user/1000
 
 从最后一行可以看到，`/dev/sda1` 分区的挂载点为 `/mnt/storage`。即所有存储到 `/mnt/storage` 文件夹中的数据，实际存储在 `/dev/sda1` 分区中。
 
-### 第五步 设置分区的所有者权限
+## 第五步 设置分区的所有者权限
 
 由于我们今后主要以 `getnas` 用户身份使用挂载的数据存储目录，因此很有必要重新指定目录的所有者：
 
@@ -134,7 +134,7 @@ getnas@getnas:~$ sudo chown getnas:getnas /mnt/storage
 
 这样一来，我们无需在命令中添加 `sudo`，也能自由的在 `/mnt/storage` 目录中进行读、写、执行等操作。
 
-### 第六步 分区信息写入 /etc/fstab 配置文件
+## 第六步 分区信息写入 /etc/fstab 配置文件
 
 手动挂载的分区在系统重启后不会自动重新挂载，为了实现分区的自动挂载，我们需要将挂载信息写入系统专门管理分区挂载信息的配置文件 `/etc/fstab` 当中。
 
