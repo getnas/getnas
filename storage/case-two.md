@@ -227,3 +227,88 @@ getnas@getnas:~$ sudo lvscan
   ACTIVE            '/dev/vg-1/lv-storage' [931.51 GiB] inherit
   
 ```
+
+现在，就可以像普通分区一样去使用新创建的逻辑卷 `/dev/vg-1/lv-storage`。
+
+### 第五步 格式化并挂载 LV 
+
+使用 `mkfs.ext4` 命令将 `/dev/vg-1/lv-storage` 格式化为 `ext4` 类型：
+
+```
+getnas@getnas:~$ sudo mkfs.ext4 /dev/vg-1/lv-storage
+mke2fs 1.43.4 (31-Jan-2017)
+创建含有 244189184 个块（每块 4k）和 61054976 个inode的文件系统
+文件系统UUID：75c7f79c-f798-4d1e-bd07-45be15eaad97
+超级块的备份存储于下列块：
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
+	4096000, 7962624, 11239424, 20480000, 23887872, 71663616, 78675968,
+	102400000, 214990848
+
+正在分配组表： 完成
+正在写入inode表： 完成
+创建日志（262144 个块）完成
+写入超级块和文件系统账户统计信息： 已完成
+```
+
+接下来，我们要挂载 LV 分区，如果尚未创建 `/mnt/storage` 目录，请使用 `mkdir` 命令创建：
+
+```
+getnas@getnas:~$ sudo mkdir /mnt/storage
+```
+
+将 LV 手动挂载到 `/mnt/storage` 目录：
+
+```
+getnas@getnas:~$ sudo mount /dev/vg-1/lv-storage /mnt/storage/
+```
+
+使用 `df -h` 命令可以查看分区挂载情况：
+
+```
+getnas@getnas:~$ df -h
+文件系统                       容量  已用  可用 已用% 挂载点
+udev                           5.9G     0  5.9G    0% /dev
+......
+/dev/mapper/vg--1-lv--storage  916G   77M  870G    1% /mnt/storage
+```
+
+将分区所有者设置为 `getnas`，以便于我们使用该普通账户管理该分区时有全部的权限：
+
+```
+getnas@getnas:~$ sudo chown getnas /mnt/storage/
+```
+
+### 第六步 分区信息写入 /etc/fstab 配置文件
+
+手动挂载的分区在系统重启后不会自动重新挂载，为了实现分区的自动挂载，我们需要将分区信息写入配置文件 /etc/fstab 当中。
+
+使用 nano 编辑器打开配置文件：
+
+```
+getnas@getnas:~$ sudo nano /etc/fstab
+```
+
+在配置文件的最后添加一行：
+
+```
+/dev/vg-1/lv-storage  /mnt/storage  ext4  auto  0  0
+```
+
+配置好的文件看起来类似下面这样，带有 `#` 号的行为注释信息：
+
+```
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda1 during installation
+UUID=a915e0e5-6249-42ec-8be0-2624f3511275 /               ext4    errors=remount-ro 0       1
+/dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
+/dev/vg-1/lv-storage  /mnt/storage  ext4  auto  0  0
+ 
+```
+
+编辑好以后使用组合键 `CTRL + o` 保存，使用组合键 `CTRL + x` 退出编辑器。

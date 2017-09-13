@@ -136,9 +136,9 @@ getnas@getnas:~$ sudo chown getnas:getnas /mnt/storage
 
 ## 第六步 分区信息写入 /etc/fstab 配置文件
 
-手动挂载的分区在系统重启后不会自动重新挂载，为了实现分区的自动挂载，我们需要将挂载信息写入系统专门管理分区挂载信息的配置文件 `/etc/fstab` 当中。
+手动挂载的分区在系统重启后不会自动重新挂载，为了实现分区的自动挂载，需要将分区信息写入配置文件 `/etc/fstab` 中。
 
-在编辑配置文件之前，我们要使用 `blkid` 命令查看 `/dev/sda1` 分区的 `UUID` 信息：
+编辑配置文件之前，使用 `blkid` 命令查看 `/dev/sda1` 分区的 `UUID` 信息：
 
 ```
 getnas@getnas:~$ sudo blkid
@@ -151,13 +151,13 @@ getnas@getnas:~$ sudo blkid
 getnas@getnas:~$ sudo nano /etc/fstab
 ```
 
-在配置问的末尾新增一行，内容为：
+在配置文件的末尾新增一行，内容为：
 
 ```
 UUID=12c59881-01cd-483e-969b-19e55e4e65ed  /mnt/storage  ext4  auto  0  0
 ```
 
-> 注意：一行共有 6 个部分，用空格分隔每个部分，请用你实际查询到值替换 `UUID` 值。
+> 注意：一行共有 6 个部分，用空格分隔每个部分，请用你实际查询到的值替换 `UUID` 值。
 
 配置好的文件看起来类似下面这样，带有 `#` 号的行为注释信息：
 
