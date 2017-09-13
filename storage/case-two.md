@@ -129,7 +129,6 @@ Warning: The kernel is still using the old partition table.
 The new table will be used at the next reboot or after you
 run partprobe(8) or kpartx(8)
 The operation has completed successfully.
-
 ```
 
 操作完成后程序会自动退出。其他硬盘的分区方法完全相同，重复以上四个步骤即可。
@@ -162,7 +161,6 @@ getnas@getnas:~$ sudo pvcreate /dev/sda1
 WARNING: ext4 signature detected on /dev/sda1 at offset 1080. Wipe it? [y/n]: y
   Wiping ext4 signature on /dev/sda1.
   Physical volume "/dev/sda1" successfully created.
- 
 ```
 
 创建过程会发出警告，该操作会抹去原有的磁盘的类型信息，输入 `y` 确认。
@@ -177,7 +175,6 @@ getnas@getnas:~$ sudo pvscan
 getnas@getnas:~$ sudo pvs
   PV         VG Fmt  Attr PSize   PFree
   /dev/sda1     lvm2 ---  931.51g 931.51g
-    
 ```
 
 ### 第三步 将 PV 创建为 VG
@@ -225,7 +222,6 @@ getnas@getnas:~$ sudo lvs
   
 getnas@getnas:~$ sudo lvscan
   ACTIVE            '/dev/vg-1/lv-storage' [931.51 GiB] inherit
-  
 ```
 
 现在，就可以像普通分区一样去使用新创建的逻辑卷 `/dev/vg-1/lv-storage`。
@@ -307,8 +303,7 @@ getnas@getnas:~$ sudo nano /etc/fstab
 # / was on /dev/sda1 during installation
 UUID=a915e0e5-6249-42ec-8be0-2624f3511275 /               ext4    errors=remount-ro 0       1
 /dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
-/dev/vg-1/lv-storage  /mnt/storage  ext4  auto  0  0
- 
+/dev/vg-1/lv-storage  /mnt/storage  ext4  auto  0  0 
 ```
 
 编辑好以后使用组合键 `CTRL + o` 保存，使用组合键 `CTRL + x` 退出编辑器。
