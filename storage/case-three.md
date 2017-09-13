@@ -9,6 +9,14 @@ RAID - 磁盘阵列，是一种将多个硬盘组成具有冗余能力的阵列�
 * RAID 5：由 3 块以上硬盘组成，每块硬盘都有一部分空间被用户数据校验，实际会有一块硬盘容量的空间被用作数据校验，剩余的容量为可用存储，任何一块硬盘损坏不会丢失数据。这种模式兼顾了冗余和性能，适合存储安全性要求较高的数据。
 * RAID 10：是由 2 个 RAID 1 组成的 RAID 0。这种形式即能获得 RAID 1 的冗余能力，又能获得 RAID 0 磁盘性能，可用容量为磁盘总容量的 50%。
 
+## 准备工作
+
+配置磁盘阵列的过程中我们需要用到 `parted` 分区工具，和 `mdadm` 磁盘阵列管理工具，使用以下命令安装：
+
+```
+getnas@getnas:~$ sudo apt install parted mdadm
+```
+
 ## 硬盘分区
 
 为了让系统能够妥善的识别我们创建的磁盘阵列，在开始之前应该先对磁盘进行分区。可以使用 `parted` 也可以使用 `gdisk`。
@@ -59,57 +67,33 @@ End? -1
 (parted)
 ```
 
-分区完成后可以再次使用 `p` 命令，查看是否创建成功。以此类推，重复上述步骤为 `/dev/sdb` 等硬盘创建新分区。
+分区完成后可以再次使用 `p` 命令，查看是否创建成功。以此类推，重复上述步骤为 `/dev/sdb` 等硬盘创建新分区。输入 `q` 退出程序。
 
 ## 创建 RAID 1
 
-磁盘初始化完成后，接下来我们要把 NAS 服务器上的两块 1TB 硬盘配置成 RAID 1 磁盘阵列。
+接下来我们将 `/dev/sda1` 和 `/dev/sdb1` 这两个均为 1TB 的分区组成 RAID 1 磁盘阵列。
 
-RAID 1 磁盘阵列是将两块硬盘互做镜像，任何数据都会以完全相同的方式分别存储到两块硬盘当中。即使其中一块硬盘损坏，也不会有数据丢失的风险。
+创建磁盘阵列使用 `mdadm` 命令附加必要的参数：
 
-> 注意：两块 1TB 的硬盘组成 RAID 1 磁盘阵列后，实际存储容量为单块硬盘的大小，即可用空间为 1TB。
-
-我们需要使用 `mdadm` 工具配置磁盘阵列，安装：
-
-```
-getnas@getnas:~$ sudo apt install mdadm
-```
-
-使用 `mdadm` 命令附加必要的参数：
-
-* `--create /dev/md0`：创建名为 `md0` 的磁盘阵列设备
-* `--level=1`：阵列类型为 `raid 1`
-* `--raid-devices=2`：指定该阵列由 2 个磁盘组成
-* `/dev/sdX`：为组成阵列的磁盘路径名
+* `--create /dev/md0`：创建名为 `md0` 的磁盘阵列设备；
+* `--level=1`：阵列类型为 `raid 1`；
+* `--raid-devices=2`：指定该磁盘阵列由 2 个磁盘设备组成；
+* `/dev/sdX`：组成阵列的磁盘分区；
 
 ```
-getnas@getnas:~$ sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb /dev/sdc
-mdadm: /dev/sdb appears to be part of a raid array:
-       level=raid0 devices=0 ctime=Thu Jan  1 08:00:00 1970
-mdadm: partition table exists on /dev/sdb but will be lost or
-       meaningless after creating array
+getnas@getnas:~$ sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sda1 /dev/sdb1
 mdadm: Note: this array has metadata at the start and
     may not be suitable as a boot device.  If you plan to
     store '/boot' on this device please ensure that
     your boot-loader understands md/v1.x metadata, or use
     --metadata=0.90
-mdadm: /dev/sdc appears to be part of a raid array:
-       level=raid0 devices=0 ctime=Thu Jan  1 08:00:00 1970
-mdadm: partition table exists on /dev/sdc but will be lost or
-       meaningless after creating array
-Continue creating array?
-```
-
-看到 `Continue creating array?` 提示时输入 `yes` 并回车键确认继续。
-
-```
-......
-Continue creating array? yes
+Continue creating array? y
 mdadm: Defaulting to version 1.2 metadata
 mdadm: array /dev/md0 started.
 ```
+看到 `Continue creating array?` 交互信息时输入 `y` 或 `yes` 确认。
 
-这样，路径名为 `/dev/md0` 的 RAID 1 类型磁盘阵列就创建好了。
+这样就完成了 RAID 1 磁盘阵列的创建。
 
 ### 查看磁盘阵列信息
 
@@ -126,47 +110,111 @@ getnas@getnas:~$ sudo mdadm /dev/md0
 getnas@getnas:~$ sudo mdadm --detail /dev/md0
 /dev/md0:
         Version : 1.2
-  Creation Time : Thu Sep  7 17:57:33 2017
+  Creation Time : Wed Sep 13 22:02:33 2017
      Raid Level : raid1
-     Array Size : 976631488 (931.39 GiB 1000.07 GB)
-  Used Dev Size : 976631488 (931.39 GiB 1000.07 GB)
+     Array Size : 974630912 (929.48 GiB 998.02 GB)
+  Used Dev Size : 974630912 (929.48 GiB 998.02 GB)
    Raid Devices : 2
   Total Devices : 2
     Persistence : Superblock is persistent
 
   Intent Bitmap : Internal
 
-    Update Time : Thu Sep  7 17:59:54 2017
+    Update Time : Wed Sep 13 22:02:43 2017
           State : clean, resyncing
  Active Devices : 2
 Working Devices : 2
  Failed Devices : 0
   Spare Devices : 0
 
-  Resync Status : 2% complete
+  Resync Status : 0% complete
 
            Name : getnas:0  (local to host getnas)
-           UUID : 054d4a70:e34ca554:9e07e4a7:a3ac28d9
-         Events : 28
+           UUID : 7ab3a467:4d1f7403:a38385b4:eca86e95
+         Events : 2
 
     Number   Major   Minor   RaidDevice State
-       0       8       16        0      active sync   /dev/sdb
-       1       8       32        1      active sync   /dev/sdc
+       0       8        1        0      active sync   /dev/sda1
+       1       8       17        1      active sync   /dev/sdb1
 ```
 
-当我们再次使用 `fdisk -l` 命令时，即可看到名为 `/dev/md0` 的新设备：
+从输出的信息中可以看到，磁盘阵列的名称(Name)为 `getnas:0`，你的磁盘阵列名称可能与此处的不同，请使用实际的名称。
+
+### 格式化并挂载分区
+
+目前设备的路径名仍然为 `/dev/md0`，但当我们重新启动系统以后，设备名就会变成 `/dev/md/getnas:0`。此处，我们以重启之前进行格式化和挂载举例。
+
+**第一步 格式化分区**
+
+使用 `mkfs.ext4` 命令格式化分区：
 
 ```
-getnas@getnas:~$ sudo fdisk -l
-......
-Disk /dev/md0: 931.4 GiB, 1000070643712 bytes, 1953262976 sectors
-Units: sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 4096 bytes
-I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+getnas@getnas:~$ sudo mkfs.ext4 /dev/md0
+创建含有 243657728 个块（每块 4k）和 60915712 个inode的文件系统
+文件系统UUID：a80571bc-345c-4a62-9dd3-22f98c63f679
+超级块的备份存储于下列块：
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
+	4096000, 7962624, 11239424, 20480000, 23887872, 71663616, 78675968,
+	102400000, 214990848
+
+正在分配组表： 完成
+正在写入inode表： 完成
+创建日志（262144 个块）完成
+写入超级块和文件系统账户统计信息： 已完成
 ```
 
-### 查看磁盘阵列状态
+**第二步 创建挂载目录**
+
+在挂载分区之前，先确认是否创建了 `/mnt/storage` 目录，如果没有请执行以下命令创建：
 
 ```
+getnas@getnas:~$ sudo mkdir /mnt/storage
+```
+
+**第三步 手动挂载分区**
 
 ```
+getnas@getnas:~$ sudo mount /dev/md0 /mnt/storage
+```
+
+**第四步 设置目录所有权**
+
+使用 `chown` 命令，将 `/mnt/storage` 目录的所有者指定为 `getnas`。请使用你在安装系统时实际创建的账户名替换该用户名：
+
+```
+getnas@getnas:~$ sudo chown getnas /mnt/storage
+```
+
+### 配置分区自动挂载
+
+使用 `nano` 编辑器打开配置文件 `/etc/fstab`：
+
+```
+getnas@getnas:~$ sudo nano /etc/fstab
+```
+
+在配置文件的最后添加一行：
+
+```
+/dev/md/getnas:0  /mnt/storage  ext4  auto  0  0
+```
+
+> 注意：请将分区名称中的 `getnas:0` 替换成你真实的磁盘阵列名。
+
+编辑完成以后，配置文件开起来应该类似这样，其中 `#` 开头的行为注释：
+
+```
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda1 during installation
+UUID=a915e0e5-6249-42ec-8be0-2624f3511275 /               ext4    errors=remount-ro 0       1
+/dev/sr0        /media/cdrom0   udf,iso9660 user,noauto     0       0
+/dev/md/getnas:0  /mnt/storage  ext4  auto  0  0
+```
+
+重新启动系统，使用 `df -h` 命令即可查看分区挂载情况。
