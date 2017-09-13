@@ -377,14 +377,14 @@ getnas@getnas:~$ sudo pvdisplay
   PV UUID               WFFokx-wt5j-OJOv-nl0X-OTFF-nc3p-mS1GQL
 ```
 
-从输出的信息可以看到，`/dev/sdb1` 是一个新创建的物理卷，我们将它添加到 `vg-1` 卷组中：
+从输出的信息可以看到，`/dev/sdb1` 是一个新创建的物理卷，使用 `vgextend` 命令将它添加到 `vg-1` 卷组中：
 
 ```
 getnas@getnas:~$ sudo vgextend vg-1 /dev/sdb1
   Volume group "vg-1" successfully extended
 ```
 
-再次使用 `vgdisplay` 命令，可以看到卷组 `vg-1` 当前(Cur PV)有 2 个 PV，可用空间(Free Size) 为 `931.51 GiB`：
+再次使用 `vgdisplay` 命令，可以看到卷组 `vg-1` 当前(Cur PV)有 2 个，卷组总容量(VG Size)为 `1.82 TiB`，可用空间(Free Size) 为 `931.51 GiB`：
 
 ```
 getnas@getnas:~$ sudo vgdisplay
@@ -412,7 +412,7 @@ getnas@getnas:~$ sudo vgdisplay
 
 ### LV 扩容
 
-卷组 VG 的扩容以后，就可以给 LV 逻辑卷进行扩容了，首先使用 `lvdisplay` 命令查看逻辑卷的详细信息：
+卷组扩容完成后，就可以给 LV 逻辑卷进行扩容了，首先使用 `lvdisplay` 命令查看逻辑卷的详细信息：
 
 ```
 getnas@getnas:~$ sudo lvdisplay
@@ -446,7 +446,7 @@ getnas@getnas:~$ sudo lvresize -l +100%FREE vg-1/lv-storage
 
 > 注意：命令中的 `-l` 参数可以用 `--extends` 替代，`+100%FREE` 代表使用所有可用空间进行扩容，不要漏掉 `+` 号。
 
-再次使用 `lvdisplay` 命令查看逻辑卷信息：
+再次使用 `lvdisplay` 命令查看逻辑卷信息，可以看到逻辑卷容量(LV Size) 已提升至 `1.82 TiB`：
 
 ```
 getnas@getnas:~$ sudo lvdisplay
@@ -470,15 +470,19 @@ getnas@getnas:~$ sudo lvdisplay
 
 ### 文件系统扩容
 
-LV 扩容以后，使用 LV 创建的 `ext4` 文件系统需要手动扩容。
+LV 扩容后，还需要对在 LV 上创建的文件系统进行扩容，本例文件系统类型为 `ext4`：
 
 **第一步 卸载分区**
+
+使用 `umount` 命令卸载分区：
 
 ```
 getnas@getnas:~$ sudo umount /mnt/storage
 ```
 
 **第二步 检测文件系统**
+
+使用 `fsck` 命令对分区做完整性检查：
 
 ```
 getnas@getnas:~$ sudo fsck -f /dev/vg-1/lv-storage
@@ -494,6 +498,8 @@ e2fsck 1.43.4 (31-Jan-2017)
 
 **第三步 文件系统扩容**
 
+使用 `resize2fs` 命令对文件系统执行扩容操作：
+
 ```
 getnas@getnas:~$ sudo resize2fs /dev/vg-1/lv-storage
 resize2fs 1.43.4 (31-Jan-2017)
@@ -503,7 +509,7 @@ resize2fs 1.43.4 (31-Jan-2017)
 
 **第四步 重新挂载分区**
 
-重启 NAS 服务器或手动挂载分区：
+经过前面三个步骤的扩容操作，分区容量扩展操作全部完成，重启 NAS 服务器或手动挂载分区：
 
 ```
 getnas@getnas:~$ sudo mount /dev/vg-1/lv-storage /mnt/storage/
