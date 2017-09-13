@@ -268,7 +268,7 @@ udev                           5.9G     0  5.9G    0% /dev
 /dev/mapper/vg--1-lv--storage  916G   77M  870G    1% /mnt/storage
 ```
 
-将分区所有者设置为 `getnas`，以便于我们使用该普通账户管理该分区时有全部的权限：
+将分区所有者设置为 `getnas`，以便于我们以 `getnas` 用户身份管理该目录时有全部的权限：
 
 ```
 getnas@getnas:~$ sudo chown getnas /mnt/storage/
@@ -307,3 +307,165 @@ UUID=a915e0e5-6249-42ec-8be0-2624f3511275 /               ext4    errors=remount
 ```
 
 编辑好以后使用组合键 `CTRL + o` 保存，使用组合键 `CTRL + x` 退出编辑器。
+
+## LVM 管理
+
+### VG 扩容
+
+使用 `vgdisplay` 命令查看 VG 的详细信息：
+
+```
+getnas@getnas:~$ sudo vgdisplay
+  --- Volume group ---
+  VG Name               vg-1
+  System ID
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  2
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                1
+  Open LV               1
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               931.51 GiB
+  PE Size               4.00 MiB
+  Total PE              238466
+  Alloc PE / Size       238466 / 931.51 GiB
+  Free  PE / Size       0 / 0
+  VG UUID               hh1BR6-dpJH-6pXP-OMuK-Tt3j-IeL6-M8ryC7
+```
+
+从输出结果可以看到，`vg-1` 卷组的容量(VG Size)为 `931.51 GiB`，已分配(Alloc Size)为 `931.51 GiB`，剩余可用空间(Free Size)为 `0`。
+
+可以向 VG 中添加 PV 增加可用空间。
+
+根据之前介绍的方法，用 `pvcreate` 命令将 `/dev/sdb1` 分区也创建成 PV。
+
+```
+getnas@getnas:~$ sudo pvcreate /dev/sdb1
+  Physical volume "/dev/sdb1" successfully created.
+```
+
+使用 `pvdisplay` 命令可查看所有 PV 的详细信息：
+
+```
+getnas@getnas:~$ sudo pvdisplay
+  --- Physical volume ---
+  PV Name               /dev/sda1
+  VG Name               vg-1
+  PV Size               931.51 GiB / not usable 4.69 MiB
+  Allocatable           yes (but full)
+  PE Size               4.00 MiB
+  Total PE              238466
+  Free PE               0
+  Allocated PE          238466
+  PV UUID               UVixOQ-RH6R-X5Wd-xUt0-fRf0-03gv-aKjnzQ
+
+  "/dev/sdb1" is a new physical volume of "931.51 GiB"
+  --- NEW Physical volume ---
+  PV Name               /dev/sdb1
+  VG Name
+  PV Size               931.51 GiB
+  Allocatable           NO
+  PE Size               0
+  Total PE              0
+  Free PE               0
+  Allocated PE          0
+  PV UUID               WFFokx-wt5j-OJOv-nl0X-OTFF-nc3p-mS1GQL
+```
+
+从输出的信息可以看到，`/dev/sdb1` 是一个新创建的物理卷，我们将它添加到 `vg-1` 卷组中：
+
+```
+getnas@getnas:~$ sudo vgextend vg-1 /dev/sdb1
+  Volume group "vg-1" successfully extended
+```
+
+再次使用 `vgdisplay` 命令，可以看到卷组 `vg-1` 当前(Cur PV)有 2 个 PV，可用空间(Free Size) 为 `931.51 GiB`：
+
+```
+getnas@getnas:~$ sudo vgdisplay
+  --- Volume group ---
+  VG Name               vg-1
+  System ID
+  Format                lvm2
+  Metadata Areas        2
+  Metadata Sequence No  3
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                1
+  Open LV               1
+  Max PV                0
+  Cur PV                2
+  Act PV                2
+  VG Size               1.82 TiB
+  PE Size               4.00 MiB
+  Total PE              476932
+  Alloc PE / Size       238466 / 931.51 GiB
+  Free  PE / Size       238466 / 931.51 GiB
+  VG UUID               hh1BR6-dpJH-6pXP-OMuK-Tt3j-IeL6-M8ryC7
+```
+
+### LV 扩容
+
+卷组 VG 的扩容以后，就可以给 LV 逻辑卷进行扩容了，首先使用 `lvdisplay` 命令查看逻辑卷的详细信息：
+
+```
+getnas@getnas:~$ sudo lvdisplay
+  --- Logical volume ---
+  LV Path                /dev/vg-1/lv-storage
+  LV Name                lv-storage
+  VG Name                vg-1
+  LV UUID                EBD8c9-Phfx-VxT4-5bez-KPNg-yfdv-2NfHtQ
+  LV Write Access        read/write
+  LV Creation host, time getnas, 2017-09-13 12:12:34 +0800
+  LV Status              available
+  # open                 1
+  LV Size                931.51 GiB
+  Current LE             238466
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     auto
+  - currently set to     256
+  Block device           254:0
+```
+
+可以看到，当前逻辑卷 `/dev/vg-1/lv-storage` 的容量为 `931.51 GiB`。
+
+使用 `lvresize` 命令为其扩容，将 `vg-1` 卷组的所有可用空间分配给逻辑卷：
+
+```
+getnas@getnas:~$ sudo lvresize -l +100%FREE vg-1/lv-storage
+  Size of logical volume vg-1/lv-storage changed from 931.51 GiB (238466 extents) to 1.82 TiB (476932 extents).
+  Logical volume vg-1/lv-storage successfully resized.
+```
+
+> 注意：命令中的 `-l` 参数可以用 `--extends` 替代，`+100%FREE` 代表使用所有可用空间进行扩容，不要漏掉 `+` 号。
+
+再次使用 `lvdisplay` 命令查看逻辑卷信息：
+
+```
+getnas@getnas:~$ sudo lvdisplay
+  --- Logical volume ---
+  LV Path                /dev/vg-1/lv-storage
+  LV Name                lv-storage
+  VG Name                vg-1
+  LV UUID                EBD8c9-Phfx-VxT4-5bez-KPNg-yfdv-2NfHtQ
+  LV Write Access        read/write
+  LV Creation host, time getnas, 2017-09-13 12:12:34 +0800
+  LV Status              available
+  # open                 1
+  LV Size                1.82 TiB
+  Current LE             476932
+  Segments               2
+  Allocation             inherit
+  Read ahead sectors     auto
+  - currently set to     256
+  Block device           254:0
+```
+
+> 提示：由于逻辑卷 `/dev/vg-1/lv-storage` 已经挂载到 `/mnt/storage` 目录，扩容后需要重新挂载分区才能生效。
