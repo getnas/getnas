@@ -467,3 +467,67 @@ getnas@getnas:~$ sudo lvdisplay
   - currently set to     256
   Block device           254:0
 ```
+
+### 从 LVM 移除硬盘
+
+有可能是硬盘故障，也可能是你想从卷组中拆一块硬盘出来挪作它用，不论出于什么原因，要从 LVM 中移除硬盘，必须确保满足以下条件：
+
+* 即将从 LVM 中移除的硬盘空间最好未被使用；
+* 如果硬盘空间已被使用，必须确保卷组中其他硬盘上的剩余空间足够存放将被拆除硬盘中已存储的数据；
+
+接着前面的例子，我们已经使用两块 1TB 硬盘创建的 PV 组成了 `vg-1` 卷组，并且使用卷组的全部空间创建了逻辑卷 `lv-storage`。因为空间几乎没有使用，现在要把 `/dev/sdb1` 从 LVM 中移除。
+
+**第一步 卸载分区**
+
+```
+getnas@getnas:~$ sudo umount /dev/vg-1/lv-storage
+```
+
+**第二步 缩减 LV 空间**
+
+由于目前两块硬盘组成卷组的所有空间都被 `lv-storage` 逻辑卷占用了，因此必须先将其缩减。由于两块硬盘的容量相同，且逻辑卷占用改了两块硬盘的 100% 空间，因此我们要缩减 LV 总容量的 50%。使用 `lvresize` 命令：
+
+```
+getnas@getnas:~$ sudo lvresize -l -50%LV -r vg-1/lv-storage
+fsck from util-linux 2.29.2
+/dev/mapper/vg--1-lv--storage：13/122101760 文件（0.0% 为非连续的）， 10505021/488378368 块
+resize2fs 1.43.4 (31-Jan-2017)
+将 /dev/mapper/vg--1-lv--storage 上的文件系统调整为 244189184 个块（每块 4k）。
+/dev/mapper/vg--1-lv--storage 上的文件系统现在为 244189184 个块（每块 4k）。
+
+  Size of logical volume vg-1/lv-storage changed from 1.82 TiB (476932 extents) to 931.51 GiB (238466 extents).
+  Logical volume vg-1/lv-storage successfully resized.
+```
+
+**第三步 转移数据**
+
+使用 `pvmove` 命令将 `/dev/sdb1` 上的数据转移到 VG 中其他设备上：
+
+```
+getnas@getnas:~$ sudo pvmove /dev/sdb1
+  No extents available for allocation
+```
+
+虽然被分配给了 LV ，但 `/dev/sdb1` 这个 PV 的空间尚未被占用，因此不需要转移数据。
+
+> 注意：如果你的 PV 在逻辑卷中被存入了数据，那么在执行数据转移的时候，转移操作可能需要很长时间才能完成。
+
+**第四步 从 VG 中移除 PV**
+
+使用 `vgreduce` 命令，从 `vg-1` 中移除 `/dev/sdb1`：
+
+```
+getnas@getnas:~$ sudo vgreduce vg-1 /dev/sdb1
+  Removed "/dev/sdb1" from volume group "vg-1"
+```
+
+**第五步 删除 PV**
+
+使用 `pvremove` 命令，将 `/dev/sdb1` 上的 LVM 相关信息抹去：
+
+```
+getnas@getnas:~$ sudo pvremove /dev/sdb1
+  Labels on physical volume "/dev/sdb1" successfully wiped.
+```
+
+好了，现在硬盘已经从 LVM 中成功移除。
