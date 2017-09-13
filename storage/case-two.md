@@ -468,4 +468,43 @@ getnas@getnas:~$ sudo lvdisplay
   Block device           254:0
 ```
 
-> 提示：由于逻辑卷 `/dev/vg-1/lv-storage` 已经挂载到 `/mnt/storage` 目录，扩容后需要重新挂载分区才能生效。
+### 文件系统扩容
+
+LV 扩容以后，使用 LV 创建的 `ext4` 文件系统需要手动扩容。
+
+**第一步 卸载分区**
+
+```
+getnas@getnas:~$ sudo umount /mnt/storage
+```
+
+**第二步 检测文件系统**
+
+```
+getnas@getnas:~$ sudo fsck -f /dev/vg-1/lv-storage
+fsck from util-linux 2.29.2
+e2fsck 1.43.4 (31-Jan-2017)
+第 1 步：检查inode、块和大小
+第 2 步：检查目录结构
+第 3 步：检查目录连接性
+第 4 步：检查引用计数
+第 5 步：检查组概要信息
+/dev/mapper/vg--1-lv--storage：12/61054976 文件（0.0% 为非连续的）， 4114692/244189184 块
+```
+
+**第三步 文件系统扩容**
+
+```
+getnas@getnas:~$ sudo resize2fs /dev/vg-1/lv-storage
+resize2fs 1.43.4 (31-Jan-2017)
+将 /dev/vg-1/lv-storage 上的文件系统调整为 488378368 个块（每块 4k）。
+/dev/vg-1/lv-storage 上的文件系统现在为 488378368 个块（每块 4k）。
+```
+
+**第四步 重新挂载分区**
+
+重启 NAS 服务器或手动挂载分区：
+
+```
+getnas@getnas:~$ sudo mount /dev/vg-1/lv-storage /mnt/storage/
+```
