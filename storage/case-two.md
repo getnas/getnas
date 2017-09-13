@@ -439,12 +439,12 @@ getnas@getnas:~$ sudo lvdisplay
 使用 `lvresize` 命令为其扩容，将 `vg-1` 卷组的所有可用空间分配给逻辑卷：
 
 ```
-getnas@getnas:~$ sudo lvresize -l +100%FREE vg-1/lv-storage
+getnas@getnas:~$ sudo lvresize -l +100%FREE -r vg-1/lv-storage
   Size of logical volume vg-1/lv-storage changed from 931.51 GiB (238466 extents) to 1.82 TiB (476932 extents).
   Logical volume vg-1/lv-storage successfully resized.
 ```
 
-> 注意：命令中的 `-l` 参数可以用 `--extends` 替代，`+100%FREE` 代表使用所有可用空间进行扩容，不要漏掉 `+` 号。
+> 注意：命令中的 `-l` 参数可以用 `--extends` 替代，`+100%FREE` 代表使用所有可用空间进行扩容，不要漏掉 `+` 号。`-r` 参数可以用 `--resizefs` 替代，用于调整文件系统大小以适合 LV 扩容后的容量。
 
 再次使用 `lvdisplay` 命令查看逻辑卷信息，可以看到逻辑卷容量(LV Size) 已提升至 `1.82 TiB`：
 
@@ -466,51 +466,4 @@ getnas@getnas:~$ sudo lvdisplay
   Read ahead sectors     auto
   - currently set to     256
   Block device           254:0
-```
-
-### 文件系统扩容
-
-LV 扩容后，还需要对在 LV 上创建的文件系统进行扩容，本例文件系统类型为 `ext4`：
-
-**第一步 卸载分区**
-
-使用 `umount` 命令卸载分区：
-
-```
-getnas@getnas:~$ sudo umount /mnt/storage
-```
-
-**第二步 检测文件系统**
-
-使用 `fsck` 命令对分区做完整性检查：
-
-```
-getnas@getnas:~$ sudo fsck -f /dev/vg-1/lv-storage
-fsck from util-linux 2.29.2
-e2fsck 1.43.4 (31-Jan-2017)
-第 1 步：检查inode、块和大小
-第 2 步：检查目录结构
-第 3 步：检查目录连接性
-第 4 步：检查引用计数
-第 5 步：检查组概要信息
-/dev/mapper/vg--1-lv--storage：12/61054976 文件（0.0% 为非连续的）， 4114692/244189184 块
-```
-
-**第三步 文件系统扩容**
-
-使用 `resize2fs` 命令对文件系统执行扩容操作：
-
-```
-getnas@getnas:~$ sudo resize2fs /dev/vg-1/lv-storage
-resize2fs 1.43.4 (31-Jan-2017)
-将 /dev/vg-1/lv-storage 上的文件系统调整为 488378368 个块（每块 4k）。
-/dev/vg-1/lv-storage 上的文件系统现在为 488378368 个块（每块 4k）。
-```
-
-**第四步 重新挂载分区**
-
-经过前面三个步骤的扩容操作，分区容量扩展操作全部完成，重启 NAS 服务器或手动挂载分区：
-
-```
-getnas@getnas:~$ sudo mount /dev/vg-1/lv-storage /mnt/storage/
 ```
