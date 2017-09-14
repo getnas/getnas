@@ -177,7 +177,7 @@ getnas@getnas:~$ sudo pvs
   /dev/sda1     lvm2 ---  931.51g 931.51g
 ```
 
-### 第三步 将 PV 创建为 VG
+### 第三步 用 PV 创建 VG
 
 下面假设要使用 `/dev/sda1` PV 创建一个名为 `vg-1` 的 VG，使用 `vgcreate` 命令：
 

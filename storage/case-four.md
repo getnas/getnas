@@ -55,7 +55,7 @@ Working Devices : 2
        1       8       17        1      active sync   /dev/sdb1
 ```
 
-## 磁盘阵列分区
+## 为 Raid 分区
 
 卸载已挂载的磁盘阵列设备：
 
@@ -132,3 +132,22 @@ The operation has completed successfully.
 ```
 
 操作完成，程序会自动退出。
+
+## 配置 LVM
+
+### 将 RAID 分区创建为 PV
+
+```
+getnas@getnas:~$ sudo pvcreate /dev/md/getnas:0p1
+  Physical volume "/dev/md/getnas:0p1" successfully created.
+```
+
+### 用 PV 创建 VG
+
+创建名为 `vg-1` 的 VG，并将 PV `/dev/md/getnas:0p1` 添加到 VG 中：
+
+```
+getnas@getnas:~$ sudo vgcreate vg-1 /dev/md/getnas:0p1
+  Volume group "vg-1" successfully created
+```
+
