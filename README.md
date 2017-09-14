@@ -38,6 +38,7 @@
 * [更新系统](initialization/system-upgrade.md)
 * [通过 SSH 远程管理服务器](initialization/use-ssh.md)
 * [准备数据盘](storage/prepare-hdd.md)
+   * [系统 U 盘分区容量调整](storage/resize-flashdrive.md)
 	* [方案一 直接使用硬盘分区](storage/case-one.md)
 	* [方案二 硬盘 + LVM](storage/case-two.md)
 	* [方案三 直接使用 RAID 磁盘阵列](storage/case-three.md)
