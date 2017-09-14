@@ -63,4 +63,72 @@ Working Devices : 2
 getnas@getnas:~$ sudo umount /dev/md/getnas:0
 ```
 
+使用 `gdisk` 交互模式下打开磁盘阵列设备：
 
+```
+getnas@getnas:~$ sudo gdisk /dev/md/getnas:0
+GPT fdisk (gdisk) version 1.0.1
+
+Partition table scan:
+  MBR: not present
+  BSD: not present
+  APM: not present
+  GPT: not present
+
+Creating new GPT entries.
+
+Command (? for help): 
+```
+
+输入 `p` 查看设备分区情况：
+
+```
+Command (? for help): p
+Disk /dev/md/getnas:0: 1949261824 sectors, 929.5 GiB
+Logical sector size: 512 bytes
+Disk identifier (GUID): C06AA593-EF3A-4BA7-925A-17A691195FF2
+Partition table holds up to 128 entries
+First usable sector is 34, last usable sector is 1949261790
+Partitions will be aligned on 2048-sector boundaries
+Total free space is 1949261757 sectors (929.5 GiB)
+
+Number  Start (sector)    End (sector)  Size       Code  Name
+
+Command (? for help): 
+```
+
+检查并确认该设备上不存在旧的分区，如果有，请使用 `d` 指令删除。
+
+输入 `n` 创建新分区：
+
+* Partition number - 分区编号，按回车使用默认值；
+* First sector - 起始扇区，按回车使用默认值；
+* Last sector - 结束删除，按回车使用默认值；
+* Hex code or GUID - 分区类型代码，输入 `8e00` 即 `Linux LVM` 类型；
+
+```
+Command (? for help): n
+Partition number (1-128, default 1):
+First sector (34-1949261790, default = 2048) or {+-}size{KMGTP}:
+Last sector (2048-1949261790, default = 1949261790) or {+-}size{KMGTP}:
+Current type is 'Linux filesystem'
+Hex code or GUID (L to show codes, Enter = 8300): 8e00
+Changed type of partition to 'Linux LVM'
+
+Command (? for help): 
+```
+
+输入 `w` 将变更写入磁盘：
+
+```
+Command (? for help): w
+
+Final checks complete. About to write GPT data. THIS WILL OVERWRITE EXISTING
+PARTITIONS!!
+
+Do you want to proceed? (Y/N): y
+OK; writing new GUID partition table (GPT) to /dev/md/getnas:0.
+The operation has completed successfully.
+```
+
+操作完成，程序会自动退出。
