@@ -151,3 +151,43 @@ getnas@getnas:~$ sudo vgcreate vg-1 /dev/md/getnas:0p1
   Volume group "vg-1" successfully created
 ```
 
+### 在 VG 上创建 LV
+
+首先查看 VG 有多少可用存储空间，使用 `vgdisplay` 命令：
+
+```
+getnas@getnas:~$ sudo vgdisplay
+  --- Volume group ---
+  VG Name               vg-1
+  System ID
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  1
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                0
+  Open LV               0
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               929.48 GiB
+  PE Size               4.00 MiB
+  Total PE              237946
+  Alloc PE / Size       0 / 0
+  Free  PE / Size       237946 / 929.48 GiB
+  VG UUID               JDFM0M-RIsZ-D6iD-oUfu-iirW-JOCa-3u4kGq
+```
+
+使用 VG 的全部可用容量创建分区，使用 `lvcreate` 命令：
+
+* `-n` 或 `--name`：LV 名称；
+* `-l` 或 `--extents`：以百分比形式指定 LV 容量；
+* `-L` 或 `--size`：以数字形式指定 LV 容量；
+
+```
+getnas@getnas:~$ sudo lvcreate -n lv-storage -l 100%FREE vg-1
+  Logical volume "lv-storage" created.
+```
+
+逻辑卷的格式化与挂载与 [方案二](case-two.md) 中介绍的方法完全相同，此处不再重复介绍。
