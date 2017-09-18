@@ -76,9 +76,9 @@ End? -1
 创建磁盘阵列使用 `mdadm` 命令附加必要的参数：
 
 * `--create /dev/md0`：创建名为 `md0` 的磁盘阵列设备；
-* `--level=1`：阵列类型为 `raid 1`；
-* `--raid-devices=2`：指定该磁盘阵列由 2 个磁盘设备组成；
-* `/dev/sdX`：组成阵列的磁盘分区；
+* `--level`：磁盘阵列类型 `raid1` 或 `1`；
+* `--raid-devices`：指定该磁盘阵列由几个磁盘设备组成；
+* `/dev/sdX`：组成阵列的各个磁盘分区；
 
 ```
 getnas@getnas:~$ sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sda1 /dev/sdb1
@@ -218,3 +218,122 @@ UUID=a915e0e5-6249-42ec-8be0-2624f3511275 /               ext4    errors=remount
 ```
 
 重新启动系统，使用 `df -h` 命令即可查看分区挂载情况。
+
+## 创建 RAID 5
+
+这里我们额外增加了两块 1TB 硬盘，NAS 服务器上现在有 4 块容量相同的硬盘，使用 `fdisk` 命令查看：
+
+```
+getnas@getnas:~$ sudo fdisk -l
+Disk /dev/sda: 7.5 GiB, 8004304896 bytes, 15633408 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x77d811ad
+
+Device     Boot Start      End  Sectors  Size Id Type
+/dev/sda1  *     2048 13537279 13535232  6.5G 83 Linux
+
+
+Disk /dev/sdb: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Disklabel type: gpt
+Disk identifier: 809807E5-A4BA-4CD7-B9C7-7C1707EE9229
+
+Device     Start        End    Sectors   Size Type
+/dev/sdb1   2048 1953525134 1953523087 931.5G Linux RAID
+
+
+Disk /dev/sdc: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Disklabel type: gpt
+Disk identifier: 4336065F-D40A-4683-A837-B854017AC3CF
+
+Device     Start        End    Sectors   Size Type
+/dev/sdc1   2048 1953525134 1953523087 931.5G Linux RAID
+
+
+Disk /dev/sdd: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: gpt
+Disk identifier: A3858B91-4DD2-4E7B-8D35-C495261CAEF6
+
+Device     Start        End    Sectors   Size Type
+/dev/sdd1   2048 1953525134 1953523087 931.5G Linux RAID
+
+
+Disk /dev/sde: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: gpt
+Disk identifier: 8AFB74C8-204E-44D9-926E-C9D8F8E3DDFD
+
+Device     Start        End    Sectors   Size Type
+/dev/sde1   2048 1953525134 1953523087 931.5G Linux RAID
+```
+
+注意，从 `/dev/sdb` 到 `/dev/sde` 这四个硬盘都按照前面的要求进创建了 `Linux RAID` 类型的分区。
+
+创建 RAID 5 磁盘阵列同样要使用 `mdadm` 命令：
+
+* `--create`：指定要创建的磁盘阵列设备路径名 `/dev/md0`；
+* `--level`：磁盘阵列级别，输入 `raid5` 或 `5`；
+* `--raid-devices`：指定磁盘阵列由几块硬盘组成；
+* `/dev/sdX1`：组成磁盘阵列个各个硬盘分区；
+
+```
+getnas@getnas:~$ sudo mdadm --create /dev/md0 --level=5 --raid-devices=4 /dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1
+mdadm: Defaulting to version 1.2 metadata
+mdadm: array /dev/md0 started.
+```
+
+查看磁盘阵列详细信息：
+
+```
+getnas@getnas:~$ sudo mdadm --detail /dev/md0
+/dev/md0:
+        Version : 1.2
+  Creation Time : Mon Sep 18 21:47:42 2017
+     Raid Level : raid5
+     Array Size : 2929890816 (2794.16 GiB 3000.21 GB)
+  Used Dev Size : 976630272 (931.39 GiB 1000.07 GB)
+   Raid Devices : 4
+  Total Devices : 4
+    Persistence : Superblock is persistent
+
+  Intent Bitmap : Internal
+
+    Update Time : Mon Sep 18 21:52:43 2017
+          State : clean, degraded, recovering
+ Active Devices : 3
+Working Devices : 4
+ Failed Devices : 0
+  Spare Devices : 1
+
+         Layout : left-symmetric
+     Chunk Size : 512K
+
+ Rebuild Status : 3% complete
+
+           Name : getnas:0  (local to host getnas)
+           UUID : ac9b5a09:b9f60a20:6eaf053f:01cb1080
+         Events : 61
+
+    Number   Major   Minor   RaidDevice State
+       0       8       17        0      active sync   /dev/sdb1
+       1       8       33        1      active sync   /dev/sdc1
+       2       8       49        2      active sync   /dev/sdd1
+       4       8       65        3      spare rebuilding   /dev/sde1
+```
+
+从输出可以看到，我们创建的 RAID 5 级别的磁盘阵列，可用容量为 3000 GB，已用容量为 1000 GB。从最下方的设备列表中也可以看到，最后一块硬盘状态为 `spare rebuilding` 即用于磁盘阵列数据冗余的。
+
+这里创建的 RAID 5 级别磁盘阵列与前面创建的 RAID 1 磁盘阵列设备名称，格式化方式和自动挂载方式完全相同，此处不再重复介绍。
