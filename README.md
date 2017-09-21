@@ -32,17 +32,19 @@
 
 * [项目概述](summary.md)
 * [准备工作](preparations.md)
-* [制作 U 盘系统安装盘](operating-system-installation/usb-installer.md)
-* [安装 Debian 操作系统](operating-system-installation/system-installation.md)
+* [制作 U 盘系统安装盘](system-installation/usb-installer.md)
+* [安装 Debian 操作系统](system-installation/system-installation.md)
 * [第一次启动](the-first-boot/the-first-boot.md)
 * [更新系统](initialization/system-upgrade.md)
 * [通过 SSH 远程管理服务器](initialization/use-ssh.md)
-* [准备数据盘](storage/prepare-hdd.md)
+* [存储管理](storage/index.md)
+	* [准备数据盘](storage/prepare-hdd.md)
    * [系统 U 盘分区容量调整](storage/resize-flashdrive.md)
 	* [方案一 直接使用硬盘分区](storage/case-one.md)
 	* [方案二 硬盘 + LVM](storage/case-two.md)
 	* [方案三 直接使用 RAID 磁盘阵列](storage/case-three.md)
 	* [方案四 RAID + LVM](storage/case-four.md)
+* [Samba 文件共享](samba.md)
 
 ## 采用的开源项目
 
