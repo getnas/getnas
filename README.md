@@ -46,7 +46,7 @@
 	* [方案四 RAID + LVM](storage/case-four.md)
 * [Samba 文件共享](samba.md)
 * [常见问题](questions)
-	* [UEFI 模式 Debian 启动失败进入 initramfs](questions/uefi-cannot-boot)
+	* [UEFI 模式 Debian 启动失败进入 initramfs](questions/uefi-cannot-boot.md)
 
 ## 采用的开源项目
 
