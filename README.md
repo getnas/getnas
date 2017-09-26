@@ -37,7 +37,7 @@
 * [第一次启动](the-first-boot/the-first-boot.md)
 * [更新系统](initialization/system-upgrade.md)
 * [通过 SSH 远程管理服务器](initialization/use-ssh.md)
-* [存储管理](storage/index.md)
+* [存储管理](storage)
 	* [准备数据盘](storage/prepare-hdd.md)
    * [系统 U 盘分区容量调整](storage/resize-flashdrive.md)
 	* [方案一 直接使用硬盘分区](storage/case-one.md)
@@ -45,6 +45,8 @@
 	* [方案三 直接使用 RAID 磁盘阵列](storage/case-three.md)
 	* [方案四 RAID + LVM](storage/case-four.md)
 * [Samba 文件共享](samba.md)
+* [常见问题](questions)
+	* [UEFI 模式 Debian 启动失败进入 initramfs](questions/uefi-cannot-boot)
 
 ## 采用的开源项目
 
