@@ -65,6 +65,7 @@
 * [Avahi](http://avahi.org/)
 * [frp](https://github.com/fatedier/frp)
 * [webui-aria2](https://github.com/ziahamza/webui-aria2)
+* [Docker](https://www.docker.com/)
 
 ## 写作规范
 [GetNAS 项目写作规范](writing-guidelines.md)
