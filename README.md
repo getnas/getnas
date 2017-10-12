@@ -49,6 +49,7 @@
    * [使用 Let's Encrypt 实现加密的 HTTPS 协议](nextcloud/frp_letsencrypt.md) 
 * [常见问题](questions)
 	* [UEFI 模式 Debian 启动失败进入 initramfs](questions/uefi-cannot-boot.md)
+	* [修改 Docker 默认存储目录](questions/docker-root.md)
 
 ## 采用的开源项目
 
