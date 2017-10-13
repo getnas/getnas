@@ -1,42 +1,57 @@
-# 修改 Docker 默认存储目录
+# 修改 Docker 默认存储路径
 
-原文链接：[https://github.com/IronicBadger/til/edit/master/docker/change-docker-root.md](https://github.com/IronicBadger/til/edit/master/docker/change-docker-root.md)
+## 查看 Docker 的默认存储路径
 
-### Change Docker root dir using systemd
-
-The Docker root dir is usually something like `/var/lib/docker` by default. Here's how to change it using a systemd `.service` file.
-
-Find your current root directory using `docker info`.
-
-    $ docker info
-        Root Dir: /var/lib/docker/aufs
-
-Since we're using systemd modifying the `DOCKER-OPTS` tag within `/etc/default/docker` to include `-g /new/root/dir` isn't going to work. There are two options, both require you to edit your `docker.service` file.
-
-> Pro tip: `systemctl status docker.service` will print the location of this file at the top of the output
-
-##### Option 1 - Direct edit to `docker.service`
-
-* Edit `ExecStart` line to look like this `ExecStart =/usr/bin/docker daemon -g /new/docker/root/dir -H fd://`
-* `systemctl daemon-reload`
-* `systemctl restart docker`
-* `docker info` - verify the root dir has updated
-
-##### Option 2 - Create a systemd drop-in service file (better way)
-
-This option is preferred as directly editing `.service` files should be avoided. They may be overwritten during an update for example.
-
-* `vi /etc/systemd/system/docker.service.d/docker.root.conf` and populate with:
-
-```sh
-[Service]
-ExecStart=
-ExecStart=/usr/bin/docker daemon -g /new/docker/root -H fd://
+```
+# docker info
 ```
 
-* `systemctl daemon-reload`
-* `systemctl restart docker`
-* `docker info` - verify the root dir has updated
+> 通常，默认存储路径为 `/var/lib/docker`
+
+## 停止 docker 服务
+
+```
+# systemctl stop docker
+```
+
+## 创建 Drop-In 文件
+
+Drop-In 文件能够覆盖 docker 默认服务配置文件 `/lib/systemd/system/docker.service` 的参数。
+
+### 第一步 创建 docker.service.d 目录
+
+```
+# mkdir /etc/systemd/system/docker.service.d
+```
+
+### 第二步 创建 docker.conf 文件
+
+```
+# nano /etc/systemd/system/docker.service.d/docker.conf
+```
+
+添加以下配置信息，将 `/mnt/new_volume` 替换为最终作为 docker 存储的实际路径：
+
+```
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd --graph="/mnt/new_volume" --storage-driver=devicemapper 
+```
+
+## 重载 systemd 守护进程
+
+```
+# systemctl daemon-reload 
+```
+
+## 重启 docker 服务
+
+```
+# systemdctl start docker
+```
 
 ***Note - Existing Containers and Images***  
 If you already have containers or images in `/var/lib/docker` you may wish to stop and back these up before moving them to the new root location. Moving can be done by either `rsync -a /var/lib/docker/* /path/to/new/root` or if permissions do not matter, you can simply use mv  or cp too.
+
+参考：[https://sanenthusiast.com/change-default-image-container-location-docker/](https://sanenthusiast.com/change-default-image-container-location-docker/)
+
