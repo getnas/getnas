@@ -139,6 +139,12 @@ deb http://mirror.xtom.com.hk/debian/ stable main contrib
 deb http://security.debian.org/ stable/updates main contrib
 ```
 
+**提示**：如果你只想查找速度最快的软件源，而不需要程序生成 `sources.list` 配置文件，可以在命令中添加 `testing` 参数：
+
+```
+getnas@getnas:~$ sudo netselect-apt testing
+```
+
 ### 第三步 使用新生成的镜像服务器
 
 备份原配置文件：
