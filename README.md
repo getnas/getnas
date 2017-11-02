@@ -50,6 +50,7 @@
 * [跨平台文件同步 - Syncthing](syncthing)
 * [全能下载机](download-machine)
 	* [全能下载工具 Aria2 配置](download-machine/aria2-settings.md)
+	* [BT/PT 下载工具 Transmission 配置](download-machine/transmission-settings.md)
 	* [BT 下载工具 qBittorrent 配置](download-machine/qbittorrent-settings.md)
 * [多用户私有云网盘 - NextCloud](nextcloud)
    * [使用 Let's Encrypt 实现加密的 HTTPS 协议](nextcloud/frp_letsencrypt.md) 
