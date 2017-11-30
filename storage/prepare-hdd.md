@@ -40,7 +40,7 @@ Device     Boot Start      End  Sectors  Size Id Type
 可以看到 NAS 服务器上目前有 3 个磁盘设备：
 
 * 磁盘 `/dev/sda` 和 `/dev/sdb` 容量均 931.5 GiB，是我们用作存储数据的机械硬盘。
-* 磁盘 `/dev/sda` 容量 7.3 GiB，是安装了 Debian 系统的 U 盘。
+* 磁盘 `/dev/sdc` 容量 7.3 GiB，是安装了 Debian 系统的 U 盘。
 
 ## 初始化磁盘
 
