@@ -6,20 +6,20 @@
 
 遵照本项目的指导，你最终会将一台普通的计算机（PC）打造成为具有以下功能的 NAS 服务器：
 
-* 具有扩容能力的存储系统
-* 多用户私有网盘
-* 全能下载机
-* 文件共享
-* 文件同步
-* Apple TimeMachine（时光机）
+- 具有扩容能力的存储系统
+- 多用户私有网盘
+- 全能下载机
+- 文件共享
+- 文件同步
+- Apple TimeMachine（时光机）
 
 搭配云服务器、国际域名、邮件推送等云计算资源，将能实现以下功能：
 
-* 通过互联网访问网盘等功能
-* 远程管理服务器
-* 离线下载
-* 基于 P2P 的虚拟专用网
-* E-mail 故障通知
+- 通过互联网访问网盘等功能
+- 远程管理服务器
+- 离线下载
+- 基于 P2P 的虚拟专用网
+- E-mail 故障通知
 
 ## 适用群体
 
@@ -31,62 +31,63 @@
 
 ## 目录
 
-* [项目概述](summary.md)
-* [准备工作](preparations.md)
-* [制作 U 盘系统安装盘](system-installation/usb-installer.md)
-* [安装 Debian 操作系统](system-installation/system-installation.md)
-* [第一次启动](the-first-boot/the-first-boot.md)
-* [更新系统](initialization/system-upgrade.md)
-* [通过 SSH 远程管理服务器](initialization/use-ssh.md)
-* [存储管理](storage)
-	* [准备数据盘](storage/prepare-hdd.md)
-   * [系统 U 盘分区容量调整](storage/resize-flashdrive.md)
-	* [方案一 直接使用硬盘分区](storage/case-one.md)
-	* [方案二 硬盘 + LVM](storage/case-two.md)
-	* [方案三 直接使用 RAID 磁盘阵列](storage/case-three.md)
-	* [方案四 RAID + LVM](storage/case-four.md)
-* [局域网文件共享 - Samba](samba)
-	* [Samba 共享配置](samba/create-samba-share.md)
-	* [用各种设备访问共享](samba/access-samba-share.md)
-* [跨平台文件同步 - Syncthing](syncthing)
-* [全能下载机](download-machine)
-	* [全能下载工具 Aria2 配置](download-machine/aria2-settings.md)
-	* [BT/PT 下载工具 Transmission 配置](download-machine/transmission-settings.md)
-	* [BT 下载工具 qBittorrent 配置](download-machine/qbittorrent-settings.md)
-* [多用户私有云网盘 - NextCloud](nextcloud)
-   * [使用 Let's Encrypt 实现加密的 HTTPS 协议](nextcloud/frp_letsencrypt.md) 
-* [Apple Time Machine](time-machine)
-	* [Time Machine 配置](time-machine/time-machine-settings.md)
-	* [使用 Time Machine](time-machine/time-machine-usage.md)
-* [常见问题](questions)
-	* [UEFI 模式 Debian 启动失败进入 initramfs](questions/uefi-cannot-boot.md)
-	* [修改 Docker 默认存储目录](questions/docker-root.md)
+- [项目概述](summary.md)
+- [准备工作](preparations.md)
+- [操作系统管理](os/README.md)
+	- [制作系统安装盘](os/usb-installer.md)
+	- [安装操作系统](os/installation.md)
+	- [第一次启动](os/first-boot.md)
+	- [更新系统](os/upgrade.md)
+	- [通过 SSH 远程管理服务器](initialization/use-ssh.md)
+- [存储管理](storage)
+	- [准备数据盘](storage/prepare-hdd.md)
+	- [系统 U 盘分区容量调整](storage/resize-flashdrive.md)
+		- [方案一 直接使用硬盘分区](storage/case-one.md)
+		- [方案二 硬盘 + LVM](storage/case-two.md)
+		- [方案三 直接使用 RAID 磁盘阵列](storage/case-three.md)
+		- [方案四 RAID + LVM](storage/case-four.md)
+- [局域网文件共享 - Samba](samba)
+	- [Samba 共享配置](samba/create-samba-share.md)
+	- [用各种设备访问共享](samba/access-samba-share.md)
+- [跨平台文件同步 - Syncthing](syncthing)
+- [全能下载机](download-machine)
+	- [全能下载工具 Aria2 配置](download-machine/aria2-settings.md)
+	- [BT/PT 下载工具 Transmission 配置](download-machine/transmission-settings.md)
+	- [BT 下载工具 qBittorrent 配置](download-machine/qbittorrent-settings.md)
+- [多用户私有云网盘 - NextCloud](nextcloud)
+   - [使用 Let's Encrypt 实现加密的 HTTPS 协议](nextcloud/frp_letsencrypt.md) 
+- [Apple Time Machine](time-machine)
+	- [Time Machine 配置](time-machine/time-machine-settings.md)
+	- [使用 Time Machine](time-machine/time-machine-usage.md)
+- [常见问题](questions)
+	- [UEFI 模式 Debian 启动失败进入 initramfs](questions/uefi-cannot-boot.md)
+	- [修改 Docker 默认存储目录](questions/docker-root.md)
 
 ## 采用的开源项目
 
-* [Ubuntu](https://www.ubuntu.com/server)
-* [Debian](https://www.debian.org/)
-* [NextCloud](https://www.nextcloud.com)
-* [Syncthing](https://syncthing.net/)
-* [Aria2](https://aria2.github.io/)
-* [qBittorrent](https://www.qbittorrent.org/)
-* [Samba](https://www.samba.org/)
-* [Apache](http://httpd.apache.org/)
-* [MariaDB](https://downloads.mariadb.org/)
-* [Tinc](https://www.tinc-vpn.org/)
-* [Netatalk](http://netatalk.sourceforge.net/)
-* [Avahi](http://avahi.org/)
-* [frp](https://github.com/fatedier/frp)
-* [webui-aria2](https://github.com/ziahamza/webui-aria2)
-* [Docker](https://www.docker.com/)
-* [Transmission](https://transmissionbt.com)
+- [Ubuntu](https://www.ubuntu.com/server)
+- [NextCloud](https://www.nextcloud.com)
+- [Syncthing](https://syncthing.net/)
+- [Aria2](https://aria2.github.io/)
+- [qBittorrent](https://www.qbittorrent.org/)
+- [Samba](https://www.samba.org/)
+- [Apache](http://httpd.apache.org/)
+- [MariaDB](https://downloads.mariadb.org/)
+- [Tinc](https://www.tinc-vpn.org/)
+- [Netatalk](http://netatalk.sourceforge.net/)
+- [Avahi](http://avahi.org/)
+- [frp](https://github.com/fatedier/frp)
+- [webui-aria2](https://github.com/ziahamza/webui-aria2)
+- [Docker](https://www.docker.com/)
+- [Transmission](https://transmissionbt.com)
+- [Etcher](https://etcher.io/)
 
 ## 写作规范
 [项目写作规范](writing-guidelines.md)
 
 ## 赞助 & 合作
 
-* [赞助本项目](sponsor/sponsor.md)
+- [赞助本项目](sponsor/sponsor.md)
 
 ## 版权 & 许可
 
