@@ -1,16 +1,17 @@
-# 《一台普通电脑的 NAS 之旅 》
+# 一台电脑的 NAS 之旅
 
-本项目将指导你从零开始构建一台家庭 NAS 网络存储服务器，从硬件到系统再到程序，完全自己动手搞定。
+本手册将指导您构建一台 `NAS` 网络存储服务器，您可以使用手边闲置的台式机、笔记本或像树莓派一样的卡片电脑。我们将从系统安装开始，一步一步打造拥有丰富功能的存储服务器。
 
 ## 构建目标
 
 遵照本项目的指导，你最终会将一台普通的计算机（PC）打造成为具有以下功能的 NAS 服务器：
 
+* 具有扩容能力的存储系统
 * 多用户私有网盘
-* HTTP、BT 全能下载机
-* 局域网文件共享
-* 跨平台文件同步
-* Apple TimeMachine
+* 全能下载机
+* 文件共享
+* 文件同步
+* Apple TimeMachine（时光机）
 
 搭配云服务器、国际域名、邮件推送等云计算资源，将能实现以下功能：
 
@@ -22,11 +23,11 @@
 
 ## 适用群体
 
-原则上本方案适用于任何人，我们会尽可能提供详细的操作说明，没有 Linux 系统使用经验的用户可能需要额外掌握一些知识，因此构建过程会相应延长。
+原则上本方案适用于任何人，我们会尽可能提供详细的操作说明，没有 `Linux` 系统使用经验的用户可能需要额外掌握一些知识，因此构建过程会相应延长。
 
-## 项目状态
+## 风险提示
 
-本项目内容正在进行创作，在此期间，目录、标题和内容随时都可能发生较大变动。建议 **暂时** 不要采用本项目指南构建用于生产环境的 NAS 服务器。
+本指南尚未创作完毕，在此期间，目录、标题和内容随时都可能发生较大变动。建议 **暂时** 不要构建用于生产环境的 NAS 服务器。
 
 ## 目录
 
@@ -63,6 +64,7 @@
 
 ## 采用的开源项目
 
+* [Ubuntu](https://www.ubuntu.com/server)
 * [Debian](https://www.debian.org/)
 * [NextCloud](https://www.nextcloud.com)
 * [Syncthing](https://syncthing.net/)
@@ -80,15 +82,15 @@
 * [Transmission](https://transmissionbt.com)
 
 ## 写作规范
-[GetNAS 项目写作规范](writing-guidelines.md)
+[项目写作规范](writing-guidelines.md)
 
 ## 赞助 & 合作
 
-* [赞助 GetNAS 项目](sponsor/sponsor.md)
+* [赞助本项目](sponsor/sponsor.md)
 
 ## 版权 & 许可
 
-版权所有 ©️ 2017 [于鸿儒](https://twitter.com/herald_yu) (Herald Yu)
+版权所有 ©️ 2017-2018 [于鸿儒](https://twitter.com/herald_yu) (Herald Yu)
 
 [<img alt="知识共享许可协议" style="border-width:0" src="images/by-nc-nd-88x31.png">](http://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh)
 
