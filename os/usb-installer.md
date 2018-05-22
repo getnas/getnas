@@ -6,11 +6,11 @@
 
 在本指南中，我们要使用 `Ubuntu Server` 操作系统，即专门针对服务器环境设计的系统版本。
 
-我们将下载使用 `Ubuntu 16.04 Server (LTS)`，
+本指南使用 `Ubuntu 16.04 Server (LTS)`
 
 **下载地址：**[https://www.ubuntu.com/download/alternative-downloads](https://www.ubuntu.com/download/alternative-downloads)
 
-> 提示：Ubuntu 18.04 是最新发布的 LTS 版本，但很多应用尚未支持该版本，因此本指南暂时不会选用该版本。
+> 提示：Ubuntu 18.04 是最新发布的 LTS 版本，但很多应用尚未支持该版本，因此本指南暂时不会选用。
 
 > **LTS**: Long Term Support - 长期支持，Ubuntu LTS 版本拥有长达 5 年的更新支持。
 
@@ -32,5 +32,7 @@
 > **官网下载**：https://etcher.io/
 
 Etcher 支持 Linux、Windwos 以及 MacOS 操作系统，请根据你当前使用的计算机系统进行选择下载。
+
+![Etcher](etcher.png)
 
 Etcher 的使用非常简单，运行程序后，首先选择已经下载好的系统 `iso` 镜像，然后选择 U 盘，最后点击 `Flash` 按钮等待烧录完成即可。

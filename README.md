@@ -34,7 +34,7 @@
 - [项目概述](summary.md)
 - [准备工作](preparations.md)
 - [操作系统管理](os/README.md)
-	- [制作系统安装盘](os/usb-installer.md)
+    - [制作系统安装盘](os/usb-installer.md)
 	- [安装操作系统](os/installation.md)
 	- [第一次启动](os/first-boot.md)
 	- [更新系统](os/upgrade.md)
