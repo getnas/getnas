@@ -33,6 +33,6 @@
 
 Etcher 支持 Linux、Windwos 以及 MacOS 操作系统，请根据你当前使用的计算机系统进行选择下载。
 
-![Etcher](etcher.png)
+![Etcher](img/etcher.png)
 
 Etcher 的使用非常简单，运行程序后，首先选择已经下载好的系统 `iso` 镜像，然后选择 U 盘，最后点击 `Flash` 按钮等待烧录完成即可。

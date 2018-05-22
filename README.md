@@ -36,7 +36,7 @@
 - [操作系统管理](os/README.md)
     - [制作系统安装盘](os/usb-installer.md)
 	- [安装操作系统](os/installation.md)
-	- [第一次启动](os/first-boot.md)
+	- [第一次启动系统](os/first-boot.md)
 	- [更新系统](os/upgrade.md)
 	- [通过 SSH 远程管理服务器](initialization/use-ssh.md)
 - [存储管理](storage)
