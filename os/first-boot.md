@@ -42,3 +42,33 @@ getnas@GetNAS:~$ sudo apt install -y avahi-deamon samba
 ```
 
 ## 修改更快的软件源
+
+如果你更新软件包的速度较慢，可以用国内的软件源镜像替换官方软件源，这里采用阿里云的镜像举例：
+
+### 备份配置文件
+
+Ubuntu 系统的软件源信息位于 `/etc/apt/sources.list` 文件中，为了防止不当修改产生不可预知的后果，在修改之前应该对其进行备份。
+
+```shell
+~$ sudo cp /etc/apt/sources.list /etc/apt/sources.list_bak
+```
+
+### 方案一 手动修改软件源
+
+使用 `nano` 编辑器打开配置文件：
+
+```shell
+~$ sudo nano /etc/apt/sources.list
+```
+
+将其中的 `cn.archive.ubuntu.com` 和 `security.ubuntu.com` 均替换成 `mirrors.aliyun.com`。
+
+> nano 是 Linux 系统下非常简单易用的一款编辑器，如果你初次使用，可以到网上搜索相关指南。
+
+### 方案二 下载配置文件
+
+如果你不想手动修改配置文件，可以在备份配置文件后，执行以下命令下载已经修改好的配置文件。
+
+```shell
+~$ sudo wget http://theurl.com/sources.list -P /etc/apt
+```

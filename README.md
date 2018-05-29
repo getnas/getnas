@@ -25,6 +25,8 @@
 
 原则上本方案适用于任何人，我们会尽可能提供详细的操作说明，没有 `Linux` 系统使用经验的用户可能需要额外掌握一些知识，因此构建过程会相应延长。
 
+本书绝大多数操作将在 Linux 命令行界面进行，虽然没有 Linux 系统使用基础的用户也能够跟着本指南的节奏完成 NAS 务器的构建，但这里会认为你已经以具备一定的 Linux 系统使用基础，起码你已经知道了如何使用 SSH 访问远程服务器，以及懂得如何使用 nano 编辑器。
+
 ## 风险提示
 
 本指南尚未创作完毕，在此期间，目录、标题和内容随时都可能发生较大变动。建议 **暂时** 不要构建用于生产环境的 NAS 服务器。
@@ -39,7 +41,7 @@
 	- [第一次启动系统](os/first-boot.md)
 	- [更新系统](os/upgrade.md)
 	- [通过 SSH 远程管理服务器](initialization/use-ssh.md)
-- [存储管理](storage)
+- [存储管理](storage/README.md)
 	- [准备数据盘](storage/prepare-hdd.md)
 	- [系统 U 盘分区容量调整](storage/resize-flashdrive.md)
 		- [方案一 直接使用硬盘分区](storage/case-one.md)
