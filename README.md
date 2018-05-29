@@ -4,43 +4,40 @@
 
 ## 构建目标
 
-遵照本项目的指导，你最终会将一台普通的计算机（PC）打造成为具有以下功能的 NAS 服务器：
+跟随本手册的指导，你可以将一台普通的计算机（PC）打造成具有以下功能的 NAS 服务器：
 
 - 具有扩容能力的存储系统
 - 多用户私有网盘
 - 全能下载机
-- 文件共享
-- 文件同步
-- Apple TimeMachine（时光机）
+- 网络文件共享
+- 跨平台文件同步
 
-搭配云服务器、国际域名、邮件推送等云计算资源，将能实现以下功能：
+搭配云服务器、国际域名、邮件推送等云计算资源，还可以实现以下功能：
 
-- 通过互联网访问网盘等功能
-- 远程管理服务器
-- 离线下载
+- 网盘远程访问
 - 基于 P2P 的虚拟专用网
 - E-mail 故障通知
 
-## 适用群体
+## 技能要求
 
-原则上本方案适用于任何人，我们会尽可能提供详细的操作说明，没有 `Linux` 系统使用经验的用户可能需要额外掌握一些知识，因此构建过程会相应延长。
+本手册的绝大多数操作需在 Linux 命令行界面进行，没有 Linux 系统使用基础的用户可能无法顺畅完成 NAS 服务器的构建。
 
-本书绝大多数操作将在 Linux 命令行界面进行，虽然没有 Linux 系统使用基础的用户也能够跟着本指南的节奏完成 NAS 务器的构建，但这里会认为你已经以具备一定的 Linux 系统使用基础，起码你已经知道了如何使用 SSH 访问远程服务器，以及懂得如何使用 nano 编辑器。
+腾讯云提供了免费的上机课程 [【Linux 基础入门】](https://cloud.tencent.com/developer/labs/lab/10000)，你可在45分钟内免费使用腾讯云服务器实际操练最常用的 Linux 命令。
 
 ## 风险提示
 
-本指南尚未创作完毕，在此期间，目录、标题和内容随时都可能发生较大变动。建议 **暂时** 不要构建用于生产环境的 NAS 服务器。
+本手册尚在创作，在此期间，目录、标题和内容随时都可能发生较大变动。建议 **暂时** 不要构建用于生产环境的 NAS 服务器。
 
 ## 目录
 
-- [项目概述](summary.md)
-- [准备工作](preparations.md)
-- [操作系统管理](os/README.md)
+- [概述](summary.md)
+- [准备](preparations.md)
+- [系统管理](os/README.md)
     - [制作系统安装盘](os/usb-installer.md)
 	- [安装操作系统](os/installation.md)
 	- [第一次启动系统](os/first-boot.md)
 	- [更新系统](os/upgrade.md)
-	- [通过 SSH 远程管理服务器](initialization/use-ssh.md)
+	- [通过 SSH 连接服务器](initialization/use-ssh.md)
 - [存储管理](storage/README.md)
 	- [准备数据盘](storage/prepare-hdd.md)
 	- [系统 U 盘分区容量调整](storage/resize-flashdrive.md)
@@ -48,15 +45,15 @@
 		- [方案二 硬盘 + LVM](storage/case-two.md)
 		- [方案三 直接使用 RAID 磁盘阵列](storage/case-three.md)
 		- [方案四 RAID + LVM](storage/case-four.md)
-- [局域网文件共享 - Samba](samba)
+- [Samba 文件共享](samba)
 	- [Samba 共享配置](samba/create-samba-share.md)
 	- [用各种设备访问共享](samba/access-samba-share.md)
-- [跨平台文件同步 - Syncthing](syncthing)
-- [全能下载机](download-machine)
+- [Syncthing - 跨平台文件同步](syncthing)
+- [下载工具](download-machine)
 	- [全能下载工具 Aria2 配置](download-machine/aria2-settings.md)
 	- [BT/PT 下载工具 Transmission 配置](download-machine/transmission-settings.md)
 	- [BT 下载工具 qBittorrent 配置](download-machine/qbittorrent-settings.md)
-- [多用户私有云网盘 - NextCloud](nextcloud)
+- [NextCloud - 多用户私有云网盘](nextcloud)
    - [使用 Let's Encrypt 实现加密的 HTTPS 协议](nextcloud/frp_letsencrypt.md) 
 - [Apple Time Machine](time-machine)
 	- [Time Machine 配置](time-machine/time-machine-settings.md)
