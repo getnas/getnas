@@ -36,7 +36,7 @@
     - [制作系统安装盘](os/usb-installer.md)
 	- [安装系统](os/installation.md)
 	- [第一次启动系统](os/first-boot.md)
-	- [通过 SSH 连接服务器](os/use-ssh.md)
+	- [使用 SSH 访问 NAS 服务器](os/use-ssh.md)
 - [存储管理](storage/README.md)
 	- [准备数据盘](storage/prepare-hdd.md)
 	- [系统 U 盘分区容量调整](storage/resize-flashdrive.md)
