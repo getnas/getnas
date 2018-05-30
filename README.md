@@ -82,11 +82,12 @@
 - [Etcher](https://etcher.io/)
 
 ## 写作规范
-[项目写作规范](writing-guidelines.md)
+
+- [项目写作规范](writing-guidelines.md)
 
 ## 赞助 & 合作
 
-- [赞助本项目](sponsor/sponsor.md)
+- [提供赞助](sponsor/sponsor.md)
 
 ## 版权 & 许可
 
