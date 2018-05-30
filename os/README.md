@@ -1,9 +1,10 @@
-# 操作系统管理
+# 系统安装
 
-本章介绍 Ubuntu 操作系统安装和基本用法。操作系统管理是很大的主题，这里我们只对涉及到的部分做简要的介绍。
+Ubuntu 系统的安装非常简单，网上可以找到海量的安装教程。因此，本章将重点介绍`安装系统到 U 盘`的方面。
 
-- [制作系统安装盘](os/usb-installer.md)
-- [安装操作系统](os/installation.md)
-- [第一次启动系统](os/first-boot.md)
-- [更新系统](os/upgrade.md)
-- [通过 SSH 连接服务器](initialization/use-ssh.md)
+安装 Ubuntu 系统理论上只有三个步骤，首先下载系统安装镜像，然后将镜像写入 U 盘（或烧录到 CD），最后使用制作好的安装盘引导启动计算机完成系统的安装。
+
+- [制作系统安装盘](usb-installer.md)
+- [安装系统](installation.md)
+- [第一次启动系统](first-boot.md)
+- [使用 SSH 访问 NAS 服务器](use-ssh.md)
