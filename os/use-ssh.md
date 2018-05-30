@@ -99,13 +99,13 @@ Microsoft Windows 系统默认没有对 SSH 协议提供支持，因此需要用
 
 下载的 `putty.exe` 是绿色文件，无需安装双击即可直接运行，程序界面如下图：
 
-![Putty 主界面](putty.png)
+![Putty 主界面](img/putty.png)
 
 我们只需把 NAS 服务器的 IP 地址输入到 `Host Name` 文本框中，然后点击 `Open` 按钮即可。
 
 初次连接会弹出下图所示的安全提示窗口，点击 `是` 确认即可。
 
-![SSH 安全提示](putty-security-alert.png)
+![SSH 安全提示](img/putty-security-alert.png)
 
 ### 第三步 登录 NAS 服务器
 
@@ -113,7 +113,7 @@ Microsoft Windows 系统默认没有对 SSH 协议提供支持，因此需要用
 
 用户名和密码验证通过，即可成功登录 NAS 服务器，如下图：
 
-![](putty-login.png)
+![](img/putty-login.png)
 
 
 ## 配置主机名访问
