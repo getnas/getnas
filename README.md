@@ -1,5 +1,7 @@
 # 一台电脑的 NAS 之旅
 
+> 生活中会有很多变化，唯一不变的是变化本身。
+
 本手册将指导您构建一台 `NAS` 网络存储服务器，您可以使用手边闲置的台式机、笔记本或像树莓派一样的卡片电脑。我们将从系统安装开始，一步一步打造拥有丰富功能的存储服务器。
 
 ## 构建目标
@@ -84,14 +86,16 @@
 ## 写作规范
 [项目写作规范](writing-guidelines.md)
 
-## 赞助 & 合作
-
-* [赞助本项目](sponsor/sponsor.md)
-
 ## 版权 & 许可
 
-版权所有 ©️ 2017-2018 [于鸿儒](https://twitter.com/herald_yu) (Herald Yu)
+版权所有 ©️ 2017-2025 于鸿儒(Herald Yu)
 
 [<img alt="知识共享许可协议" style="border-width:0" src="images/by-nc-nd-88x31.png">](http://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh)
 
 本作品采用 [署名-非商业性使用-禁止演绎 4.0 国际许可协议](http://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh) 进行许可。
+
+## 赞助者（排名不分先后）
+
+[![Vultr](https://www.vultr.com/media/logo_onwhite.png)](https://www.vultr.com/?ref=7126678)
+
+[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
