@@ -98,4 +98,4 @@
 
 [![Vultr](https://www.vultr.com/media/logo_onwhite.png)](https://www.vultr.com/?ref=7126678)
 
-[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
+[![DartNode](https://dartnode.com/branding/black_color_full.png)](https://dartnode.com?aff=WackyZebra258)
