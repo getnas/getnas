@@ -96,6 +96,8 @@
 
 ## 赞助者（排名不分先后）
 
-[![Vultr](https://www.vultr.com/media/logo_onwhite.png)](https://www.vultr.com/?ref=7126678)
+<p>
+	<a href="https://www.vultr.com/?ref=7126678"><img alt="Vultr" width="200" src="https://www.vultr.com/media/logo_onwhite.png"></a>
+	<a href="https://dartnode.com?aff=WackyZebra258"><img alt="DartNode" width="200" src="https://dartnode.com/branding/black_color_full.png"></a>
+</p>
 
-[![DartNode](https://dartnode.com/branding/black_color_full.png)](https://dartnode.com?aff=WackyZebra258)
