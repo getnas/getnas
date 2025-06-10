@@ -94,10 +94,3 @@
 
 本作品采用 [署名-非商业性使用-禁止演绎 4.0 国际许可协议](http://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh) 进行许可。
 
-## 赞助者（排名不分先后）
-
-<p>
-	<a href="https://www.vultr.com/?ref=7126678"><img alt="Vultr" width="200" src="https://www.vultr.com/media/logo_onwhite.png"></a>
-	<a href="https://dartnode.com?aff=WackyZebra258"><img alt="DartNode" width="200" src="https://dartnode.com/branding/black_color_full.png"></a>
-</p>
-
